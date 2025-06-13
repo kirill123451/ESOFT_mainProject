@@ -1,0 +1,48 @@
+.vintage-header {
+  background-color: #f5f5f5;
+  padding: 20px 0;
+  font-family: 'Times New Roman', serif;
+  text-transform: uppercase;
+  border-bottom: 2px solid #000;
+}
+
+.header-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header-text {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #555;
+}
+
+.header-title {
+  font-size: 36px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  color: #000;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+  padding-bottom: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .header-text {
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  .header-text span {
+    margin: 0 10px;
+  }
+  
+  .header-title {
+    font-size: 28px;
+  }
+}
