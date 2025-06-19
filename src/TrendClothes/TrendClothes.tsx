@@ -1,4 +1,4 @@
-import { clothesList } from './TrendClothesList'
+import { clothesList } from '../ClothesList'
 import './TrendClothes.css'
 import { useState } from 'react'
 
@@ -34,7 +34,7 @@ export default function TrendClothes() {
                   </div>
                   <div className='detail-row'>
                     <span>Производитель</span>
-                    <span>{product.maker}</span>
+                    <span>{product.brand}</span>
                   </div>
                   <div className='detail-row'>
                     <span>Материал</span>

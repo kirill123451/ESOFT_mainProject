@@ -1,3 +1,4 @@
+import FilterSearch from './FilterSearch/FilterSearch'
 import Header from './Header/Header'
 import News from './News/News'
 import Slider from './slider/Slider'
@@ -11,6 +12,7 @@ function App() {
       <Slider />
       <TrendClothes />
       <News />
+      <FilterSearch />
     </>
   )
 }

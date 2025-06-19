@@ -1,5 +1,5 @@
-import TshirtManWhite from '../allClothes/T-shirt_man_white.jpg'
-import TshirtWomanWhite from '../allClothes/T-shirt_woman_white.jpg'
+import TshirtManWhite from './allClothes/T-shirt_man_white.jpg'
+import TshirtWomanWhite from './allClothes/T-shirt_woman_white.jpg'
 
 interface clotheList {
         id: number
@@ -8,7 +8,7 @@ interface clotheList {
         gender: string
         color: string
         material: string
-        maker: string
+        brand: string
         price: number
         img: string
         isSpecial: boolean
@@ -22,7 +22,7 @@ export const clothesList: clotheList[] = [
         gender: 'Мужская',
         color: 'Белая',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Gucci',
         price: 1000,
         img: TshirtManWhite,
         isSpecial: true
@@ -35,7 +35,7 @@ export const clothesList: clotheList[] = [
         gender: 'Женская',
         color: 'Красная',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Prada',
         price: 1000,
         img: TshirtWomanWhite,
         isSpecial: false
@@ -47,7 +47,7 @@ export const clothesList: clotheList[] = [
         gender: 'Мужская',
         color: 'Белая',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Гучи',
         price: 1000,
         img: TshirtManWhite,
         isSpecial: true
@@ -60,7 +60,7 @@ export const clothesList: clotheList[] = [
         gender: 'Женская',
         color: 'Красная',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Гучи',
         price: 1000,
         img: TshirtWomanWhite,
         isSpecial: false
@@ -72,7 +72,7 @@ export const clothesList: clotheList[] = [
         gender: 'Мужская',
         color: 'Белая',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Гучи',
         price: 1000,
         img: TshirtManWhite,
         isSpecial: true
@@ -85,7 +85,7 @@ export const clothesList: clotheList[] = [
         gender: 'Женская',
         color: 'Красная',
         material: "Хлопок",
-        maker: 'Гучи',
+        brand: 'Гучи',
         price: 1000,
         img: TshirtWomanWhite,
         isSpecial: false
