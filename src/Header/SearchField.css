@@ -1,0 +1,145 @@
+.search-container {
+  width: 130%;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 100;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16px 28px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
+  background: #fff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  color: #1e293b;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+.search-result {
+  position: absolute;
+  width: 100%;
+  max-height: 480px;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  margin-top: 8px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  border: 1px solid #e2e8f0;
+  overflow-x: hidden;
+}
+
+@keyframes fadeIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.search-item:hover {
+  background: #f8fafc;
+  transform: translateX(4px);
+}
+
+.search-item-img {
+  width: 56px;
+  height: 66px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 16px;
+  border: 1px solid #e2e8f0;
+  transition: transform 0.25s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.search-item:hover .search-item-img {
+  transform: scale(1.06);
+}
+
+.search-item-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.search-item-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: #1e293b;
+  margin-bottom: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-item-brand {
+  font-size: 13px;
+  font-weight: 600;
+  color: white;
+  background: #2563eb;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  transition: all 0.25s ease;
+}
+
+.search-item:hover .search-item-brand {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2);
+}
+
+.search-item-price {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.no-result {
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .search-result {
+    position: fixed;
+    left: 16px;
+    right: 16px;
+    width: calc(100% - 32px);
+    max-height: 60vh;
+    z-index: 9999;
+    margin-top: 12px;
+  }
+  
+  .search-input {
+    padding: 14px 24px;
+    font-size: 15px;
+  }
+}

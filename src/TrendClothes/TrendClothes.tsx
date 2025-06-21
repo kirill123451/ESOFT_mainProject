@@ -1,16 +1,24 @@
-import { clothesList } from '../ClothesList'
 import './TrendClothes.css'
 import { useState } from 'react'
+import type { clotheList } from '../ClothesList'
 
-export default function TrendClothes() {
+
+interface TrendClothesProps {
+  products?: clotheList[];
+}
+
+export default function TrendClothes({ products = [] }: TrendClothesProps) {
   const [select, setSelect] = useState<number | null>(null);
   const [quantities, setQuantities] = useState<{ [id: number]: number }>({});
 
+  if (products.length === 0) {
+    return <div className="season-trends">Нет товаров для отображения</div>;
+  }
+
   return (
     <div className="season-trends">
-      <h2 className="trends-title">Тренды сезона</h2>
       <div className="products-grid">
-        {clothesList.map((product) => {
+        {products.map((product) => {
           const currentQuantity = quantities[product.id] || 1;
           return (
             <div

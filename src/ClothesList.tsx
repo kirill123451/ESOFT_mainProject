@@ -1,7 +1,7 @@
 import TshirtManWhite from './allClothes/T-shirt_man_white.jpg'
 import TshirtWomanWhite from './allClothes/T-shirt_woman_white.jpg'
 
-interface clotheList {
+export interface clotheList {
         id: number
         individualName: string
         clothesType: string
@@ -23,7 +23,7 @@ export const clothesList: clotheList[] = [
         color: 'Белая',
         material: "Хлопок",
         brand: 'Gucci',
-        price: 1000,
+        price: 4000,
         img: TshirtManWhite,
         isSpecial: true
     },
@@ -34,7 +34,7 @@ export const clothesList: clotheList[] = [
         clothesType: 'Футболка',
         gender: 'Женская',
         color: 'Красная',
-        material: "Хлопок",
+        material: "Полиэстер",
         brand: 'Prada',
         price: 1000,
         img: TshirtWomanWhite,
@@ -60,7 +60,7 @@ export const clothesList: clotheList[] = [
         gender: 'Женская',
         color: 'Красная',
         material: "Хлопок",
-        brand: 'Гучи',
+        brand: 'хопахопа',
         price: 1000,
         img: TshirtWomanWhite,
         isSpecial: false
@@ -72,7 +72,7 @@ export const clothesList: clotheList[] = [
         gender: 'Мужская',
         color: 'Белая',
         material: "Хлопок",
-        brand: 'Гучи',
+        brand: 'хуй',
         price: 1000,
         img: TshirtManWhite,
         isSpecial: true

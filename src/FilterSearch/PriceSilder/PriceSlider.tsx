@@ -1,31 +1,34 @@
-    import { useState } from 'react'
     import RangeSlider from 'react-range-slider-input'
     import 'react-range-slider-input/dist/style.css';
     import './PriceSlider.css'
 
-    function PriceSlider () {
-        const [currentPrice, setCurrentPrice] = useState<[number, number]>([1000, 5000])
+    interface PriceSliderProps {
+        currentPrice: [number, number];
+        onPriceChange: (value: [number, number]) => void;
+    }
+
+    function PriceSlider ({ currentPrice, onPriceChange }: PriceSliderProps) {
 
         const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const minChange = parseInt(e.target.value, 10)
             if(minChange >= 0 && minChange <= currentPrice[1]){
-                setCurrentPrice([minChange, currentPrice[1]])
+                onPriceChange([minChange, currentPrice[1]])
             }else if (minChange > currentPrice[1]) {
-                setCurrentPrice([currentPrice[1], currentPrice[1]])
+                onPriceChange([currentPrice[1], currentPrice[1]])
             }
             else{
-                setCurrentPrice([0, currentPrice[1]])
+                onPriceChange([0, currentPrice[1]])
             }
         }
 
         const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const maxChange = parseInt(e.target.value, 10)
             if(maxChange >= 0){
-                setCurrentPrice([currentPrice[0], maxChange])
+                onPriceChange([currentPrice[0], maxChange])
             }else if (maxChange < currentPrice[0]) {
-                setCurrentPrice([currentPrice[0], currentPrice[0]])
+                onPriceChange([currentPrice[0], currentPrice[0]])
             }else{
-                setCurrentPrice([currentPrice[0], 0])
+                onPriceChange([currentPrice[0], 0])
             }
         }
 
@@ -41,7 +44,7 @@
                     min={1000} 
                     max={5000} 
                     step={10} 
-                    onInput={(value) => setCurrentPrice(value)} 
+                    onInput={(value) => onPriceChange(value)} 
                     value={currentPrice} />
                         <div className="price-values-display">
                         <span>{currentPrice[0]}р</span>
