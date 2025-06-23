@@ -1,13 +1,15 @@
-    import RangeSlider from 'react-range-slider-input'
-    import 'react-range-slider-input/dist/style.css';
-    import './PriceSlider.css'
+import RangeSlider from 'react-range-slider-input'
+import 'react-range-slider-input/dist/style.css';
+import './PriceSlider.css'
+import { useEffect } from 'react';
 
     interface PriceSliderProps {
         currentPrice: [number, number];
         onPriceChange: (value: [number, number]) => void;
     }
-
+    
     function PriceSlider ({ currentPrice, onPriceChange }: PriceSliderProps) {
+        useEffect(() => console.log(currentPrice[0], currentPrice[1]), [currentPrice])
 
         const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             const minChange = parseInt(e.target.value, 10)

@@ -85,35 +85,85 @@
 }
 
 .search-container {
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto 20px;
+  margin-left: 30px;
+  width: 300px;
+}
+
+.basket-icon {
+  position: relative;
+  margin-left: 35px;
+}
+
+.basket-icon a {
+  display: flex;
+  align-items: center;
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.basket-icon:hover a {
+  color: #ff6b6b;
+}
+
+.basket-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff6b6b;
+  color: white;
+  border-radius: 30%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+  .header-text {
+    gap: 20px;
+  }
+  
+  .search-container {
+    width: 150px;
+    margin-left: 15px;
+  }
 }
 
 @media (max-width: 992px) {
   .header-text {
-    gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
     padding: 0 20px;
   }
   
-  .header-title {
-    font-size: 36px;
+  .search-container {
+    order: 1;
+    width: 100%;
+    max-width: 300px;
+    margin: 15px 0;
+  }
+  
+  .basket-icon {
+    margin-left: 15px;
   }
 }
 
 @media (max-width: 576px) {
+  .header-title {
+    font-size: 28px;
+  }
+  
   .header-text {
     gap: 12px;
     font-size: 12px;
   }
   
-  .header-title {
-    font-size: 28px;
-    letter-spacing: 2px;
-  }
-  
-  .header-title::after {
-    width: 60px;
+  .header-text span {
+    padding: 3px 0;
   }
 }

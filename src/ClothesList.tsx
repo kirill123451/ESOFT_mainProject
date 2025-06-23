@@ -1,5 +1,9 @@
-import TshirtManWhite from './allClothes/T-shirt_man_white.jpg'
-import TshirtWomanWhite from './allClothes/T-shirt_woman_white.jpg'
+import Tshirt1 from './allClothes/Woman_T-shirt_1.jpg'
+import Tshirt2 from './allClothes/Woman_T-shirt_2.jpg'
+import Tshirt3 from './allClothes/Woman_T-shirt_3.jpg'
+import Dress1 from './allClothes/Woman_Dress_1.jpg'
+import Dress2 from './allClothes/Woman_Dress_2.jpg'
+import Dress3 from './allClothes/Woman_Dress_3.jpg'
 
 export interface clotheList {
         id: number
@@ -16,78 +20,78 @@ export interface clotheList {
 
 export const clothesList: clotheList[] = [
     {   
-        id: 1,
-        individualName: 'Крутая футболка',
+        id: 11,
+        individualName: 'Футболка белая',
         clothesType: 'Футболка',
-        gender: 'Мужская',
-        color: 'Белая',
+        gender: 'Женская',
+        color: 'Белый',
         material: "Хлопок",
         brand: 'Gucci',
-        price: 4000,
-        img: TshirtManWhite,
+        price: 1990,
+        img: Tshirt1,
         isSpecial: true
     },
 
     {
-        id: 2,
-        individualName: 'Так себе футболка',
+        id: 12,
+        individualName: 'Футболка с принтом нарядная',
         clothesType: 'Футболка',
         gender: 'Женская',
-        color: 'Красная',
-        material: "Полиэстер",
-        brand: 'Prada',
-        price: 1000,
-        img: TshirtWomanWhite,
+        color: 'Белый',
+        material: "Хлопок",
+        brand: 'Wake',
+        price: 1590,
+        img: Tshirt2,
         isSpecial: false
     },
     {
-        id: 3,
-        individualName: 'Крутая футболка',
+        id: 13,
+        individualName: 'Футболка базовая хлопковая',
         clothesType: 'Футболка',
-        gender: 'Мужская',
-        color: 'Белая',
+        gender: 'Женская',
+        color: 'Кофейный',
         material: "Хлопок",
-        brand: 'Гучи',
-        price: 1000,
-        img: TshirtManWhite,
+        brand: 'JustFire',
+        price: 2390,
+        img: Tshirt3,
         isSpecial: true
     },
 
     {
-        id: 4,
-        individualName: 'Так себе футболка',
-        clothesType: 'Футболка',
+        id: 14,
+        individualName: 'Платье женское вязаное для пляжа',
+        clothesType: 'Платье',
         gender: 'Женская',
-        color: 'Красная',
-        material: "Хлопок",
-        brand: 'хопахопа',
-        price: 1000,
-        img: TshirtWomanWhite,
-        isSpecial: false
+        color: 'Бежевый',
+        material: "Акрил",
+        brand: 'SALTRENDY',
+        price: 3590,
+        img: Dress1,
+        isSpecial: true
     },
     {
-        id: 5,
-        individualName: 'Крутая футболка',
-        clothesType: 'Футболка',
-        gender: 'Мужская',
-        color: 'Белая',
-        material: "Хлопок",
-        brand: 'хуй',
-        price: 1000,
-        img: TshirtManWhite,
+        id: 15,
+        individualName: 'Платье летнее крестьянка миди',
+        clothesType: 'Платье',
+        gender: 'Женская',
+        color: 'Голубой',
+        material: "Вискоза",
+        brand: 'iDiLiS CLO',
+        price: 4190,
+        img: Dress2,
         isSpecial: true
     },
 
     {
-        id: 6,
-        individualName: 'Так себе футболка',
-        clothesType: 'Футболка',
+        id: 16,
+        individualName: 'Платье облегающее',
+        clothesType: 'Платье',
         gender: 'Женская',
-        color: 'Красная',
+        color: 'Черный',
         material: "Хлопок",
-        brand: 'Гучи',
-        price: 1000,
-        img: TshirtWomanWhite,
+        brand: 'POZITIVITI',
+        price: 4590,
+        img: Dress3,
         isSpecial: false
     },
 ]
