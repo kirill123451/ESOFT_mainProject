@@ -32,9 +32,9 @@ function Header({ basket = [] }: HeaderProps) {
           <span><Link to="/bags">Сумки</Link></span>
           <span><Link to="/shoes">Обувь</Link></span>
           <span><Link to="/sale">SALE</Link></span>
-          <span>Бренды</span>
-          <span>Контакты</span>
-          <span>Личный кабинет</span>
+          {/* <span><Link to="/brands">Бренды</Link></span> */}
+          <span><Link to="/contacts">Контакты</Link></span>
+          <span><Link to="/login">Войти</Link></span>
           
           <div className="search-container">
             <SearchField />

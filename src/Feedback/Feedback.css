@@ -18,7 +18,10 @@
   background-size: cover;
   background-position: center;
   z-index: -1;
-  opacity: 0.6; /* Регулируйте прозрачность фона */
+  opacity: 0.6; 
+}
+.feedback-route .background-image {
+  background-image: unset !important;
 }
 
 .feedback-card {

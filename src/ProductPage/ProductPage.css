@@ -1,0 +1,168 @@
+.pp-product-page {
+  display: flex;
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  gap: 40px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.pp-product-images,
+.pp-product-details {
+  flex: 1;
+}
+
+.pp-main-image {
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.pp-main-image:hover {
+  transform: scale(1.05);
+}
+
+.pp-product-title {
+  font-size: 2rem;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
+
+.pp-product-brand {
+  font-size: 1.125rem;
+  color: #666;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.pp-product-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 30px;
+}
+
+.pp-product-meta {
+  margin-bottom: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 40px;
+}
+
+.pp-meta-item {
+  display: flex;
+  gap: 0; 
+  min-width: auto;
+  align-items: center;
+}
+
+.pp-meta-label {
+  font-weight: 600;
+  color: #555;
+  min-width: auto; 
+  white-space: nowrap;
+}
+
+.pp-meta-value {
+  color: #333;
+  word-break: break-word;
+  margin-left: 4px; 
+}
+
+.pp-quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 30px 0;
+}
+
+.pp-quantity-btn {
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ddd;
+  background: #f8f8f8;
+  font-size: 1.25rem;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease;
+  user-select: none;
+}
+
+.pp-quantity-btn:hover,
+.pp-quantity-btn:focus {
+  background: #e2e8f0;
+  outline: none;
+}
+
+.pp-quantity-value {
+  font-size: 1.125rem;
+  min-width: 30px;
+  text-align: center;
+  user-select: none;
+}
+
+.pp-add-to-basket-btn {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 14px 24px;
+  font-size: 1.125rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+  user-select: none;
+}
+
+.pp-add-to-basket-btn:hover,
+.pp-add-to-basket-btn:focus {
+  background-color: #1d4ed8;
+  outline: none;
+}
+
+.pp-product-description {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+  color: #555;
+  line-height: 1.6;
+}
+
+.pp-product-description h3 {
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+  color: #333;
+}
+
+.pp-product-not-found {
+  text-align: center;
+  padding: 120px 20px;
+  font-size: 1.25rem;
+  color: #777;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .pp-product-page {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 10px;
+  }
+
+  .pp-product-meta {
+    gap: 15px 20px;
+  }
+
+  .pp-add-to-basket-btn {
+    max-width: 100%;
+  }
+}

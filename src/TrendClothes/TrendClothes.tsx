@@ -1,7 +1,7 @@
-import './TrendClothes.css';
+import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import type { clotheList } from '../ClothesList';
-import { Link } from 'react-router-dom';
+import './TrendClothes.css';
 
 interface TrendClothesProps {
   products?: clotheList[];
@@ -27,6 +27,7 @@ export default function TrendClothes({
 
   const handleAddToCart = (product: clotheList, e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     if (addToBasket) {
       const quantity = quantities[product.id] || 1;
       addToBasket(product, quantity);
@@ -50,10 +51,11 @@ export default function TrendClothes({
         {products.map((product) => {
           const currentQuantity = quantities[product.id] || 1;
           const isHovered = hoveredProductId === product.id;
-          
+
           return (
-            <div
+            <Link
               key={product.id}
+              to={`/product/${product.id}`}
               className={`product-card ${isHovered ? 'show-details' : ''}`}
               onMouseEnter={() => setHoveredProductId(product.id)}
               onMouseLeave={() => setHoveredProductId(null)}
@@ -61,13 +63,13 @@ export default function TrendClothes({
               {product.isSpecial && (
                 <div className="special-badge">Спецпредложение</div>
               )}
-              
+
               <img 
                 src={product.img} 
                 alt={product.individualName || 'Одежда'} 
                 className='product-image' 
               />
-              
+
               <h3 className="product-title">{product.individualName}</h3>
               <p className="product-price">{product.price} ₽</p>
 
@@ -77,12 +79,12 @@ export default function TrendClothes({
                     <span>Артикул</span>
                     <span> Артикул </span>
                   </div>
-                  
+
                   <div className='detail-row'>
                     <span>Производитель</span>
                     <span>{product.brand || 'Не указан'}</span>
                   </div>
-                  
+
                   <div className='detail-row'>
                     <span>Материал</span>
                     <span>{product.material || 'Не указан'}</span>
@@ -91,31 +93,36 @@ export default function TrendClothes({
                   <div className='product-actions'>
                     <div className='quantity-selector'>
                       <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
+                          e.preventDefault();
                           updateQuantity(product.id, -1);
                         }}
                         aria-label="Уменьшить количество"
                       >
                         −
                       </button>
-                      
+
                       <span>{currentQuantity}</span>
-                      
+
                       <button
+                        type="button"
                         onClick={(e) => {
                           e.stopPropagation();
+                          e.preventDefault();
                           updateQuantity(product.id, 1);
                         }}
                         aria-label="Увеличить количество"
                       >
                         +
                       </button>
-                      
+
                       <span>шт</span>
                     </div>
-                    
+
                     <button 
+                      type="button"
                       className='buy-button'
                       onClick={(e) => handleAddToCart(product, e)}
                       aria-label={`Добавить ${product.individualName} в корзину`}
@@ -125,7 +132,7 @@ export default function TrendClothes({
                   </div>
                 </div>
               )}
-            </div>
+            </Link>
           );
         })}
       </div>

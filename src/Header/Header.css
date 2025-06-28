@@ -1,30 +1,42 @@
 .vintage-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 60px; /* компактная высота */
+  padding: 10px 0 8px;
   background-color: #fff;
-  padding: 25px 0 15px;
   font-family: 'Playfair Display', serif;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
-  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  transition: background-color 0.3s ease;
 }
 
 .header-content {
   max-width: 1400px;
-  margin: 0 auto;
+  width: 100%;
+  margin: 0 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
+  box-sizing: border-box;
+  padding: 0;
 }
 
 .header-title {
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   color: #000;
   text-transform: uppercase;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 6px;
 }
 
 .header-title::after {
@@ -33,7 +45,7 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 80px;
+  width: 60px;
   height: 2px;
   background: #000;
 }
@@ -42,22 +54,23 @@
   display: flex;
   justify-content: center; 
   align-items: center;    
-  gap: 30px;
-  margin-bottom: 20px;
-  font-size: 13px;
-  letter-spacing: 1.5px;
+  gap: 35px;
+  font-size: 14px;
+  letter-spacing: 1px;
   color: #333;
   text-transform: uppercase;
   font-family: 'Montserrat', sans-serif;
   height: 100%;  
   text-align: center;  
+  margin-bottom: 0;
+  padding: 0;
 }
 
 .header-text span {
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
-  padding: 5px 0;
+  padding: 3px 0;
 }
 
 .header-text span::after {
@@ -85,13 +98,14 @@
 }
 
 .search-container {
-  margin-left: 30px;
-  width: 300px;
+  margin-left: 20px;
+  width: 400px;
 }
 
 .basket-icon {
   position: relative;
-  margin-left: 35px;
+  margin-left: 5px;
+  left: 100px;
 }
 
 .basket-icon a {
@@ -122,48 +136,45 @@
   font-weight: bold;
 }
 
-@media (max-width: 1200px) {
-  .header-text {
-    gap: 20px;
-  }
-  
-  .search-container {
-    width: 150px;
-    margin-left: 15px;
-  }
+/* Отступ сверху для контента, чтобы не перекрывался хедер */
+body, #root, .app-container {
+  padding-top: 70px;
+  box-sizing: border-box;
 }
 
+/* Адаптив */
 @media (max-width: 992px) {
-  .header-text {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    padding: 0 20px;
+  body, #root, .app-container {
+    padding-top: 90px;
+  }
+  
+  .header-content {
+    margin: 0 10px;
   }
   
   .search-container {
-    order: 1;
-    width: 100%;
-    max-width: 300px;
-    margin: 15px 0;
-  }
-  
-  .basket-icon {
-    margin-left: 15px;
+    width: 250px;
+    margin-left: 10px;
   }
 }
 
 @media (max-width: 576px) {
+  body, #root, .app-container {
+    padding-top: 110px;
+  }
+  
   .header-title {
-    font-size: 28px;
+    font-size: 22px;
   }
   
   .header-text {
-    gap: 12px;
-    font-size: 12px;
+    font-size: 10px;
+    gap: 10px;
   }
   
-  .header-text span {
-    padding: 3px 0;
+  .search-container {
+    width: 100%;
+    max-width: 200px;
+    margin-left: 0;
   }
 }

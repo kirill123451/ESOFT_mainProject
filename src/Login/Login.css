@@ -1,0 +1,162 @@
+.login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f8f9fa;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.login-header {
+  padding: 25px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #2c3e50;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+
+.login-form {
+  padding: 25px;
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.input-field {
+  margin-bottom: 20px;
+}
+
+.input-field label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #555;
+  font-weight: 500;
+}
+
+.input-field input {
+  width: 90%;
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 15px;
+  transition: border-color 0.3s;
+}
+
+.input-field input:focus {
+  outline: none;
+  border-color: #3498db;
+}
+
+.remember-block {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.remember-block input {
+  margin-right: 10px;
+}
+
+.remember-block label {
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.submit-btn:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(41, 128, 185, 0.2);
+}
+
+.forgot-link {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.forgot-link a {
+  color: #7f8c8d;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: inline-block;
+}
+
+.forgot-link a:hover {
+  color: #3498db;
+  transform: translateX(2px);
+}
+
+.personal-area {
+  padding: 25px;
+  border-top: 1px solid #eee;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.personal-area h3 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.personal-area ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.personal-area li {
+  padding: 10px 0;
+  color: #555;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.personal-area li:hover {
+  color: #3498db;
+  transform: translateX(5px);
+}
+
+@media (max-width: 480px) {
+  .login-box {
+    border-radius: 0;
+  }
+  
+  .login-wrapper {
+    padding: 0;
+  }
+}

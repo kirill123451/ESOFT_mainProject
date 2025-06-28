@@ -11,6 +11,10 @@ import './App.css'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import Feedback from './Feedback/Feedback'
 import Footer from './Footer/Footer'
+import Basket from './Header/Basket/Basket'
+import Brands from './Brands/Brands'
+import Login from './Login/Login'
+import ProductPage from './ProductPage/ProductPage'
 
 interface BasketItem {
   product: any
@@ -138,6 +142,23 @@ function App() {
             <Feedback />
           </>
         } />
+
+        <Route path='/basket' element={
+
+            <Basket basket = {basket} setBasket = {setBasket}/>
+        } />
+
+        <Route path='/brands' element={<Brands />} />
+
+        <Route path='/login' element={<Login />} />
+        
+        <Route path='/contacts' element={
+          <div className="feedback-route">
+            <Feedback />
+           </div>
+        } />
+
+        <Route path='/product/:id' element={<ProductPage addToBasket={handleAddToBasket} />} />
 
         <Route path='/sale' element={
           <>
