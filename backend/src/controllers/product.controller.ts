@@ -1,8 +1,7 @@
 import { Request, Response } from 'express'
-import  prisma  from '../prisma/client'
+import prisma from '../prisma/client'
 
 interface ProductRequest {
-  id: number
   individualName: string
   clothesType: string
   gender: string
@@ -26,7 +25,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
   }
 }
 
-export const createProduct = async (req: Request<ProductRequest>, res: Response) => {
+export const createProduct = async (req: Request<{}, {}, ProductRequest>, res: Response) => {
   const { individualName, clothesType, gender, color, material, brand, price, img, isSpecial } = req.body
 
   try {
@@ -52,3 +51,4 @@ export const createProduct = async (req: Request<ProductRequest>, res: Response)
     })
   }
 }
+
