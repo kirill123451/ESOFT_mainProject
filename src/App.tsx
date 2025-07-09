@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Route, BrowserRouter as Router, Routes, Navigate } from 'react-router-dom'
 import FilterSearch from './FilterSearch/FilterSearchClothes'
 import Header from './Header/Header'
 import News from './News/News'
@@ -8,12 +9,11 @@ import { clothesList } from './ClothesList'
 import { shoesList } from './ShoesList'
 import { bagsList } from './BagsList'
 import './App.css'
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import Feedback from './Feedback/Feedback'
 import Footer from './Footer/Footer'
 import Basket from './Header/Basket/Basket'
 import Brands from './Brands/Brands'
-import Login from './Login/Login'
+import AuthForm from './AuthForm/AuthForm'
 import ProductPage from './ProductPage/ProductPage'
 
 interface BasketItem {
@@ -26,11 +26,41 @@ function App() {
   const [filteredClothes, setFilteredClothes] = useState(clothesList)
   const [filteredBags, setFilteredBags] = useState(bagsList)
   const [filteredShoes, setFilteredShoes] = useState(shoesList)
-  const [specialItems] = useState(() => [
-    ...clothesList.filter(item => item.isSpecial),
-    ...bagsList.filter(item => item.isSpecial),
-    ...shoesList.filter(item => item.isSpecial)
-  ])
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
+  
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    setIsAuthenticated(false)
+    window.location.href = '/'
+  }
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setIsAuthenticated(false)
+        return
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/auth/validate-token', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        })
+
+        setIsAuthenticated(response.ok)
+        if (!response.ok) localStorage.removeItem('token')
+      } catch (error) {
+        console.error('Auth check failed:', error)
+        localStorage.removeItem('token')
+        setIsAuthenticated(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
 
   const handleAddToBasket = (product: any, quantity: number) => {
     setBasket(prev => {
@@ -93,23 +123,26 @@ function App() {
 
   const FilterablePage = ({ 
     title, 
-    items, 
+    items,
     filteredItems, 
     onFilterChange,
-    showClothesTypeFilter = false
+    showClothesTypeFilter = false,
+    productType
   }: {
     title: string
     items: any[]
     filteredItems: any[]
     onFilterChange: (filters: any) => void
     showClothesTypeFilter?: boolean
+    productType?: 'clothes' | 'shoes' | 'bags'
   }) => (
     <div className="main-content">
       <div className="products-section">
         <h2 className="section-title">{title}</h2>
         <TrendClothes 
-          products={filteredItems} 
+          products={filteredItems}
           addToBasket={handleAddToBasket}
+          productType={productType}
         />
       </div>
       
@@ -123,9 +156,13 @@ function App() {
     </div>
   )
 
+  if (isAuthenticated === null) {
+    return <div className="loading-screen">Загрузка...</div>
+  }
+
   return (
     <Router>
-      <Header basket={basket} />
+      <Header basket={basket} isAuthenticated={isAuthenticated} onLogout={handleLogout} />
       <Routes>
         <Route path='/' element={
           <>
@@ -133,7 +170,6 @@ function App() {
             <div className="trends-section">
               <h2 className="section-title">Хиты</h2>
               <TrendClothes 
-                products={specialItems} 
                 showAllSpecialsButton={true} 
                 addToBasket={handleAddToBasket}
               />
@@ -144,30 +180,35 @@ function App() {
         } />
 
         <Route path='/basket' element={
-
-            <Basket basket = {basket} setBasket = {setBasket}/>
+          isAuthenticated 
+            ? <Basket basket={basket} setBasket={setBasket} />
+            : <Navigate to="/AuthForm" replace />
         } />
 
         <Route path='/brands' element={<Brands />} />
 
-        <Route path='/login' element={<Login />} />
+        <Route path='/AuthForm' element={
+          isAuthenticated 
+            ? <Navigate to="/" replace />
+            : <AuthForm setIsAuthenticated={setIsAuthenticated} />
+        } />
         
         <Route path='/contacts' element={
           <div className="feedback-route">
             <Feedback />
-           </div>
+          </div>
         } />
 
-        <Route path='/product/:id' element={<ProductPage addToBasket={handleAddToBasket} />} />
+        <Route path='/product/:id' element={
+          <ProductPage addToBasket={handleAddToBasket} />
+        } />
 
         <Route path='/sale' element={
           <>
             <div className="trends-section">
               <h2 className="section-title">Спецпредложения</h2>
               <TrendClothes 
-                products={specialItems} 
                 showAllSpecialsButton={true} 
-                link={false}
                 addToBasket={handleAddToBasket}
               />
             </div>
@@ -177,19 +218,19 @@ function App() {
         <Route path='/clothes' element={
           <FilterablePage 
             title="Вся одежда"
-            items={clothesList}
             filteredItems={filteredClothes}
             onFilterChange={handleClothesFilter}
             showClothesTypeFilter={true}
+            productType="clothes"
           />
         } />
         
         <Route path='/bags' element={
           <FilterablePage 
             title="Все Сумки"
-            items={bagsList}
             filteredItems={filteredBags}
             onFilterChange={handleBagsFilter}
+            productType="bags"
           />
         } />
         
@@ -199,6 +240,7 @@ function App() {
             items={shoesList}
             filteredItems={filteredShoes}
             onFilterChange={handleShoesFilter}
+            productType="shoes"
           />
         } />
       </Routes>

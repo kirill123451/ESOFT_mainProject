@@ -151,6 +151,23 @@
   transform: translateX(5px);
 }
 
+.auth-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+  text-align: center;
+}
+
+.auth-actions a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.auth-actions a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 480px) {
   .login-box {
     border-radius: 0;

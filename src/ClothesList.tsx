@@ -1,9 +1,3 @@
-import Tshirt1 from './allClothes/Woman_T-shirt_1.jpg'
-import Tshirt2 from './allClothes/Woman_T-shirt_2.jpg'
-import Tshirt3 from './allClothes/Woman_T-shirt_3.jpg'
-import Dress1 from './allClothes/Woman_Dress_1.jpg'
-import Dress2 from './allClothes/Woman_Dress_2.jpg'
-import Dress3 from './allClothes/Woman_Dress_3.jpg'
 
 export interface clotheList {
         id: number
@@ -14,7 +8,7 @@ export interface clotheList {
         material: string
         brand: string
         price: number
-        img: string
+        imgUrl: string
         isSpecial: boolean
 }
 
@@ -28,7 +22,7 @@ export const clothesList: clotheList[] = [
         material: "Хлопок",
         brand: 'Gucci',
         price: 1990,
-        img: Tshirt1,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_T-shirt_1.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9ULXNoaXJ0XzEuanBnIiwiaWF0IjoxNzUxOTc4MzMxLCJleHAiOjE3ODM1MTQzMzF9.nei03Tanmc5mDuXgbHYrxDpbrbm_iAgufjkhaGXO6gc',
         isSpecial: true
     },
 
@@ -41,7 +35,7 @@ export const clothesList: clotheList[] = [
         material: "Хлопок",
         brand: 'Wake',
         price: 1590,
-        img: Tshirt2,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_T-shirt_2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9ULXNoaXJ0XzIuanBnIiwiaWF0IjoxNzUxOTc4MzQ4LCJleHAiOjE3ODM1MTQzNDh9.h603kiDhg5mQFBVCiKvaUv21_d9xrd5jWZWGU6pjYEE',
         isSpecial: false
     },
     {
@@ -53,7 +47,7 @@ export const clothesList: clotheList[] = [
         material: "Хлопок",
         brand: 'JustFire',
         price: 2390,
-        img: Tshirt3,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_T-shirt_3.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9ULXNoaXJ0XzMuanBnIiwiaWF0IjoxNzUxOTc4MzYzLCJleHAiOjE3ODM1MTQzNjN9.GK0j9-OJni1snaPOT07y4GmunpAryPYfp3QeUZYE10s',
         isSpecial: true
     },
 
@@ -66,7 +60,7 @@ export const clothesList: clotheList[] = [
         material: "Акрил",
         brand: 'SALTRENDY',
         price: 3590,
-        img: Dress1,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_Dress_1.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9EcmVzc18xLmpwZyIsImlhdCI6MTc1MTk3ODM4NywiZXhwIjoxNzgzNTE0Mzg3fQ._m6fqQcP5lQZVDSvHA5QZma6pwcAzuhpJ2Bi4xxMMYI',
         isSpecial: true
     },
     {
@@ -78,7 +72,7 @@ export const clothesList: clotheList[] = [
         material: "Вискоза",
         brand: 'iDiLiS CLO',
         price: 4190,
-        img: Dress2,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_Dress_2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9EcmVzc18yLmpwZyIsImlhdCI6MTc1MTk3ODQwNiwiZXhwIjoxNzgzNTE0NDA2fQ.FOkgUyDp_005VYlgb-TQ6sKUOc9kNS2dxtD250-WZ7M',
         isSpecial: true
     },
 
@@ -91,7 +85,7 @@ export const clothesList: clotheList[] = [
         material: "Хлопок",
         brand: 'POZITIVITI',
         price: 4590,
-        img: Dress3,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/clothes-images/Woman_Dress_3.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJjbG90aGVzLWltYWdlcy9Xb21hbl9EcmVzc18zLmpwZyIsImlhdCI6MTc1MTk3ODQyMCwiZXhwIjoxNzgzNTE0NDIwfQ.bUsOgWEs6rKFgL80Fthm1WKw99kkZeCQHzfs1dqdAO8',
         isSpecial: false
     },
 ]

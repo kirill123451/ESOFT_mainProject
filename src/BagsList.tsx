@@ -1,10 +1,3 @@
-import Bags1 from './allBags/Women_Bags_1.jpg'
-import Bags2 from './allBags/Women_Bags_2.jpg'
-import Bags3 from './allBags/Women_Bags_3.jpg'
-import Bags4 from './allBags/Women_Bags_4.jpg'
-import Bags5 from './allBags/Women_Bags_5.jpg'
-import Bags6 from './allBags/Women_Bags_6.jpg'
-
 export interface bagsList {
         id: number
         individualName: string
@@ -14,7 +7,7 @@ export interface bagsList {
         material: string
         brand: string
         price: number
-        img: string
+        imgUrl: string
         isSpecial: boolean
 }
 
@@ -28,7 +21,7 @@ export const bagsList: bagsList[] = [
         material: "Искусственная кожа",
         brand: 'MalletteM',
         price: 1690,
-        img: Bags1,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_1.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzEuanBnIiwiaWF0IjoxNzUxOTg0MjUyLCJleHAiOjE3ODM1MjAyNTJ9.W7NcceAs3V60dQLuXnLxYEPCpDRqkg3W7R_yhmwx18U',
         isSpecial: false
     },
 
@@ -41,7 +34,7 @@ export const bagsList: bagsList[] = [
         material: "Полиэстер",
         brand: 'OneSumkis',
         price: 2190,
-        img: Bags2,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_2.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzIuanBnIiwiaWF0IjoxNzUxOTg0MjcwLCJleHAiOjE3ODM1MjAyNzB9.ce2TbuTutNppypO_bPbg6joDRRYdTiebjWbAQySH4pg',
         isSpecial: true
     },
     {
@@ -53,7 +46,7 @@ export const bagsList: bagsList[] = [
         material: "Экокожа",
         brand: '1SUPIS',
         price: 3190,
-        img: Bags3,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_3.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzMuanBnIiwiaWF0IjoxNzUxOTg0Mjg0LCJleHAiOjE3ODM1MjAyODR9.shWkbRa8XaBPO_tlIEnXuo_W3A_5FCIqZLPxyWnxFPc',
         isSpecial: true
     },
 
@@ -66,7 +59,7 @@ export const bagsList: bagsList[] = [
         material: "Экокожа",
         brand: 'Jingpinpiju',
         price: 4190,
-        img: Bags4,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_4.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzQuanBnIiwiaWF0IjoxNzUxOTg0MzAwLCJleHAiOjE3ODM1MjAzMDB9.rlffcvs8en1-9EtFu4Qcjw294tc_wP80EydYUTUYwWc',
         isSpecial: false
     },
     {
@@ -78,7 +71,7 @@ export const bagsList: bagsList[] = [
         material: "Искусственная кожа",
         brand: 'Prills',
         price: 4190,
-        img: Bags5,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_5.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzUuanBnIiwiaWF0IjoxNzUxOTg0MzExLCJleHAiOjE3ODM1MjAzMTF9.hmTK2GzsiC9Nne4amzlPH5Lm23jieOfSaqXbMkRrEoY',
         isSpecial: true
     },
 
@@ -91,7 +84,7 @@ export const bagsList: bagsList[] = [
         material: "Полиэстер",
         brand: 'Kongunla',
         price: 3390,
-        img: Bags6,
+        imgUrl: 'https://ndyehokubzdxtcctwimv.supabase.co/storage/v1/object/sign/bags-images/Women_Bags_6.jpg?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV9jYTlkNThmNS01OTg4LTRkM2YtYjI0Yi0yY2FmZjc1N2E1YTAiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJiYWdzLWltYWdlcy9Xb21lbl9CYWdzXzYuanBnIiwiaWF0IjoxNzUxOTg0NTMyLCJleHAiOjE3ODM1MjA1MzJ9.aXVk22c7o37lBQQM-c-i9S2BEkCS1bxzR22PoXSWdZs',
         isSpecial: true
     },
 ]

@@ -1,9 +1,7 @@
 import { useParams } from 'react-router-dom';
-import { clothesList } from '../ClothesList';
-import { shoesList } from '../ShoesList';
-import { bagsList } from '../BagsList';
 import './ProductPage.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 interface ProductPageProps {
   addToBasket: (product: any, quantity: number) => void
@@ -13,19 +11,33 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
   const { id } = useParams<{ id: string }>()
   const productId = id ? parseInt(id) : null
 
-  const allProducts = [
-    ...clothesList,
-    ...shoesList,
-    ...bagsList
-  ];
-
-  const product = allProducts.find((item: any) => item.id === productId)
-
+  const [product, setProduct] = useState<any | null>('')
   const [selectedQuantity, setSelectedQuantity] = useState<number>(1)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>('')
 
-  if (!product) {
-    return <div className="pp-product-not-found">Товар не найден</div>
+  useEffect(() => {
+  if (!productId) {
+    setError('Неверный ID товара')
+    setLoading(false)
+    return
   }
+
+  axios.get(`http://localhost:3000/product/${productId}`)
+    .then(res => {
+      setProduct(res.data)
+      setLoading(false)
+    })
+    .catch(err => {
+      console.error('Ошибка при запросе:', err)
+      setError(err.response?.data?.error || err.message)
+      setLoading(false)
+    });
+}, [productId])
+
+  if (loading) return <div className="pp-product-not-found">Загрузка...</div>
+  if (error) return <div className="pp-product-not-found">Ошибка: {error}</div>
+  if (!product) return <div className="pp-product-not-found">Товар не найден</div>
 
   const getProductType = (product: any): string => {
     if (product.clothesType) return product.clothesType
@@ -50,7 +62,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
     <div className="pp-product-page">
       <div className="pp-product-images">
         <img 
-          src={product.img} 
+          src={product.imgUrl} 
           alt={product.individualName} 
           className="pp-main-image" 
         />

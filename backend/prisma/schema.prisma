@@ -35,3 +35,59 @@ model User {
   resetToken   String?
   resetTokenExpires  DateTime?
 }
+
+model Clothes {
+  id             Int     @id @default(autoincrement())
+  individualName String
+  clothesType    String
+  gender         String
+  color          String
+  material       String
+  brand          String
+  price          Int
+  imgUrl         String
+  isSpecial      Boolean @default(false)
+}
+
+model Shoes {
+  id             Int     @id @default(autoincrement())
+  individualName String
+  shoesType      String
+  gender         String
+  color          String
+  material       String
+  brand          String
+  price          Int
+  imgUrl         String
+  isSpecial      Boolean @default(false)
+}
+
+model Bags {
+  id             Int     @id @default(autoincrement())
+  individualName String
+  bagType        String
+  gender         String
+  color          String
+  material       String
+  brand          String
+  price          Int
+  imgUrl         String
+  isSpecial      Boolean @default(false)
+}
+
+model AllProducts {
+  id           Int
+  individual_name String
+  clothes_type String?
+  gender       String?
+  color        String?
+  material     String?
+  brand        String?
+  price        Int
+  img_url      String
+  is_special   Boolean
+  product_type String
+
+  @@map("AllProducts") 
+  @@ignore 
+}
