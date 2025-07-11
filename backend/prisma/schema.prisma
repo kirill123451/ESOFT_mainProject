@@ -8,32 +8,14 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Product {
-  id            Int     @id @default(autoincrement())
-  individualName String
-  clothesType   String
-  gender        String
-  color         String
-  material      String
-  brand         String
-  price         Float
-  img           String
-  isSpecial     Boolean @default(false)
-}
-
-enum Role {
-  USER
-  ADMIN
-}
-
 model User {
-  id       String    @id @default(uuid())
-  email    String @unique
-  password String
-  name     String? // nullable
-  role     Role @default(USER)
-  resetToken   String?
-  resetTokenExpires  DateTime?
+  id                String    @id @default(uuid())
+  email             String    @unique
+  password          String
+  name              String?
+  role              Role      @default(USER)
+  resetToken        String?
+  resetTokenExpires DateTime?
 }
 
 model Clothes {
@@ -75,19 +57,7 @@ model Bags {
   isSpecial      Boolean @default(false)
 }
 
-model AllProducts {
-  id           Int
-  individual_name String
-  clothes_type String?
-  gender       String?
-  color        String?
-  material     String?
-  brand        String?
-  price        Int
-  img_url      String
-  is_special   Boolean
-  product_type String
-
-  @@map("AllProducts") 
-  @@ignore 
+enum Role {
+  USER
+  ADMIN
 }

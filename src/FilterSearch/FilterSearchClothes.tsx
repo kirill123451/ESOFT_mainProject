@@ -1,114 +1,110 @@
-import { useState } from "react"
-import PriceSlider from './PriceSlider/PriceSlider'
-import './FilterSearchClothes.css'
+import { useState } from "react";
+import PriceSlider from './PriceSlider/PriceSlider';
+import './FilterSearchClothes.css';
 
 interface Item {
-  id: number
-  individualName: string
-  clothesType: string
-  gender: string
-  color: string
-  material: string
-  brand: string
-  price: number
-  img: string
-  isSpecial: boolean
+  id: number;
+  individualName: string;
+  clothesType?: string;
+  shoesType?: string;
+  bagsType?: string;
+  gender: string;
+  color: string;
+  material: string;
+  brand: string;
+  price: number;
+  imgUrl: string;
+  isSpecial: boolean;
+  productType?: 'clothes' | 'shoes' | 'bags';
+}
+
+export interface Filters {
+  priceRange: [number, number];
+  brands?: string[];
+  materials?: string[];
+  clothesType?: string[];
 }
 
 interface FilterSearchProps {
-  items: Item[]
-  onFilterChange: (filters: {
-    priceRange: [number, number]
-    brands: string[]
-    materials: string[]
-    clothesType?: string[]
-  }) => void
-  showClothesTypeFilter?: boolean
+  items: Item[];
+  onFilterChange: (filters: Filters) => void;
+  showClothesTypeFilter?: boolean;
 }
 
 function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: FilterSearchProps) {
-  const [priceRange, setPriceRange] = useState<[number, number]>([1000, 5000])
-  const [brands, setBrands] = useState<string[]>([])
-  const [materials, setMaterials] = useState<string[]>([])
-  const [clothesTypes, setClothesTypes] = useState<string[]>([])
+  const [priceRange, setPriceRange] = useState<[number, number]>([1000, 5000]);
+  const [brands, setBrands] = useState<string[]>([]);
+  const [materials, setMaterials] = useState<string[]>([]);
+  const [clothesTypes, setClothesTypes] = useState<string[]>([]);
+  const [filtersChanged, setFiltersChanged] = useState(false);
 
-  const allBrands = Array.from(new Set(items.map(item => item.brand)))
-  const allMaterials = Array.from(new Set(items.map(item => item.material)))
-  const allClothesTypes = Array.from(new Set(items.map(item => item.clothesType)))
+  const allBrands = [...new Set(items.map(item => item.brand).filter(Boolean) as string[])];
+  const allMaterials = [...new Set(items.map(item => item.material).filter(Boolean) as string[])];
+  const allClothesTypes = showClothesTypeFilter 
+    ? [...new Set(items.map(item => item.clothesType).filter(Boolean) as string[])] 
+    : [];
+
+  const applyFilters = () => {
+    const filters: Filters = {
+      priceRange,
+      ...(brands.length > 0 && { brands }),
+      ...(materials.length > 0 && { materials }),
+      ...(showClothesTypeFilter && clothesTypes.length > 0 && { clothesType: clothesTypes })
+    };
+    onFilterChange(filters);
+    setFiltersChanged(false);
+  };
 
   const handlePriceChange = (newRange: [number, number]) => {
-    setPriceRange(newRange)
-    updateFilters(newRange, brands, materials, clothesTypes)
-  }
+    setPriceRange(newRange);
+    setFiltersChanged(true);
+  };
 
-  const addToBrandList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLButtonElement
-    const brandName = target.innerText
-    const newBrands = brands.includes(brandName) 
-      ? brands.filter(item => item !== brandName)
-      : [...brands, brandName]
-    setBrands(newBrands)
-    updateFilters(priceRange, newBrands, materials, clothesTypes)
-  }
+  const toggleBrand = (brand: string) => {
+    setBrands(prevBrands => 
+      prevBrands.includes(brand) 
+        ? prevBrands.filter(b => b !== brand) 
+        : [...prevBrands, brand]
+    );
+    setFiltersChanged(true);
+  };
 
-  const addToMaterialList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLButtonElement
-    const materialName = target.innerText
-    const newMaterials = materials.includes(materialName)
-      ? materials.filter(item => item !== materialName)
-      : [...materials, materialName]
-    setMaterials(newMaterials)
-    updateFilters(priceRange, brands, newMaterials, clothesTypes)
-  }
+  const toggleMaterial = (material: string) => {
+    setMaterials(prevMaterials => 
+      prevMaterials.includes(material) 
+        ? prevMaterials.filter(m => m !== material) 
+        : [...prevMaterials, material]
+    );
+    setFiltersChanged(true);
+  };
 
-  const addToClothesTypeList = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const target = e.target as HTMLButtonElement
-    const clothesTypeName = target.innerText
-    const newClothesTypes = clothesTypes.includes(clothesTypeName)
-      ? clothesTypes.filter(item => item !== clothesTypeName)
-      : [...clothesTypes, clothesTypeName]
-    setClothesTypes(newClothesTypes)
-    updateFilters(priceRange, brands, materials, newClothesTypes)
-  }
-
-  const updateFilters = (
-    priceRange: [number, number],
-    brands: string[],
-    materials: string[],
-    clothesTypes: string[]
-  ) => {
-    const filters = {
-      priceRange,
-      brands,
-      materials,
-      ...(showClothesTypeFilter && { clothesType: clothesTypes })
-    }
-    onFilterChange(filters)
-  }
+  const toggleClothesType = (type: string) => {
+    setClothesTypes(prevTypes => 
+      prevTypes.includes(type) 
+        ? prevTypes.filter(t => t !== type) 
+        : [...prevTypes, type]
+    );
+    setFiltersChanged(true);
+  };
 
   const resetFilters = () => {
-    setPriceRange([1000, 5000])
-    setBrands([])
-    setMaterials([])
-    setClothesTypes([])
-    onFilterChange({ 
-      priceRange: [1000, 5000], 
-      brands: [], 
-      materials: [], 
-      ...(showClothesTypeFilter && { clothesType: [] })
-    })
-  }
+    setPriceRange([1000, 5000]);
+    setBrands([]);
+    setMaterials([]);
+    setClothesTypes([]);
+    setFiltersChanged(true);
+  };
 
   return (
     <div className="filter-panel">
       <h3>Подбор параметров</h3>
       
       <div>
-        <h4>Размерная цена</h4>
+        <h4>Ценовой диапазон</h4>
         <PriceSlider currentPrice={priceRange} onPriceChange={handlePriceChange} />
       </div>
 
-      {showClothesTypeFilter && (
+      {showClothesTypeFilter && allClothesTypes.length > 0 && (
         <div className="filter-section">
           <h4>Тип одежды</h4>
           <div className="filter-options">
@@ -116,7 +112,7 @@ function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: 
               <button
                 key={type}
                 className={clothesTypes.includes(type) ? "active" : ""}
-                onClick={addToClothesTypeList}
+                onClick={() => toggleClothesType(type)}
               >
                 {type}
               </button>
@@ -125,41 +121,52 @@ function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: 
         </div>
       )}
 
-      <div className="filter-section">
-        <h4>Бренд</h4>
-        <div className="filter-options">
-          {allBrands.map(brand => (
-            <button
-              key={brand}
-              className={brands.includes(brand) ? "active" : ""}
-              onClick={addToBrandList}
-            >
-              {brand}
-            </button>
-          ))}
+      {allBrands.length > 0 && (
+        <div className="filter-section">
+          <h4>Бренд</h4>
+          <div className="filter-options">
+            {allBrands.map(brand => (
+              <button
+                key={brand}
+                className={brands.includes(brand) ? "active" : ""}
+                onClick={() => toggleBrand(brand)}
+              >
+                {brand}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <div className="filter-section">
-        <h4>Материал</h4>
-        <div className="filter-options">
-          {allMaterials.map(material => (
-            <button
-              key={material}
-              className={materials.includes(material) ? "active" : ""}
-              onClick={addToMaterialList}
-            >
-              {material}
-            </button>
-          ))}
+      {allMaterials.length > 0 && (
+        <div className="filter-section">
+          <h4>Материал</h4>
+          <div className="filter-options">
+            {allMaterials.map(material => (
+              <button
+                key={material}
+                className={materials.includes(material) ? "active" : ""}
+                onClick={() => toggleMaterial(material)}
+              >
+                {material}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="filter-actions">
         <button className="reset-btn" onClick={resetFilters}>Сбросить</button>
+        <button 
+          className={`apply-btn ${filtersChanged ? 'active' : ''}`}
+          onClick={applyFilters}
+          disabled={!filtersChanged}
+        >
+          Применить фильтры
+        </button>
       </div>
     </div>
-  )
+  );
 }
 
-export default FilterSearch
+export default FilterSearch;

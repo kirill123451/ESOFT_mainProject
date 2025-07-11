@@ -5,9 +5,6 @@ import Header from './Header/Header'
 import News from './News/News'
 import Slider from './slider/Slider'
 import TrendClothes from './TrendClothes/TrendClothes'
-import { clothesList } from './ClothesList'
-import { shoesList } from './ShoesList'
-import { bagsList } from './BagsList'
 import './App.css'
 import Feedback from './Feedback/Feedback'
 import Footer from './Footer/Footer'
@@ -15,19 +12,73 @@ import Basket from './Header/Basket/Basket'
 import Brands from './Brands/Brands'
 import AuthForm from './AuthForm/AuthForm'
 import ProductPage from './ProductPage/ProductPage'
+import axios from 'axios'
 
 interface BasketItem {
   product: any
   quantity: number
 }
 
+interface Product {
+  id: number
+  individualName: string
+  type?: string
+  gender: string
+  color: string
+  material: string
+  brand: string
+  price: number
+  imgUrl: string
+  isSpecial: boolean
+  productType?: 'clothes' | 'shoes' | 'bags'
+}
+
 function App() {
   const [basket, setBasket] = useState<BasketItem[]>([])
-  const [filteredClothes, setFilteredClothes] = useState(clothesList)
-  const [filteredBags, setFilteredBags] = useState(bagsList)
-  const [filteredShoes, setFilteredShoes] = useState(shoesList)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
-  
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [authChecked, setAuthChecked] = useState<boolean>(false)
+  const [specialProducts, setSpecialProducts] = useState<Product[]>([]); // <-- Новое состояние
+  const [loadingSpecialProducts, setLoadingSpecialProducts] = useState(true); // <-- Загрузка
+
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        setAuthChecked(true)
+        return
+      }
+      try {
+        const response = await fetch('http://localhost:3000/auth/validate-token', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        })
+        setIsAuthenticated(response.ok)
+        if (!response.ok) localStorage.removeItem('token')
+      } catch (error) {
+        console.error('Auth check failed:', error)
+        localStorage.removeItem('token')
+        setIsAuthenticated(false)
+      } finally {
+        setAuthChecked(true)
+      }
+    }
+    checkAuth()
+  }, [])
+
+  useEffect(() => {
+    const loadSpecialProducts = async () => {
+      try {
+        setLoadingSpecialProducts(true);
+        const response = await axios.get('http://localhost:3000/product/special-offers'); // или другой endpoint
+        setSpecialProducts(response.data);
+      } catch (err) {
+        console.error('Ошибка загрузки спецпредложений:', err);
+      } finally {
+        setLoadingSpecialProducts(false);
+      }
+    };
+    loadSpecialProducts();
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -35,129 +86,19 @@ function App() {
     window.location.href = '/'
   }
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        setIsAuthenticated(false)
-        return
-      }
-
-      try {
-        const response = await fetch('http://localhost:3000/auth/validate-token', {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        })
-
-        setIsAuthenticated(response.ok)
-        if (!response.ok) localStorage.removeItem('token')
-      } catch (error) {
-        console.error('Auth check failed:', error)
-        localStorage.removeItem('token')
-        setIsAuthenticated(false)
-      }
-    }
-
-    checkAuth()
-  }, [])
-
-  const handleAddToBasket = (product: any, quantity: number) => {
+  const handleAddToBasket = (product: Product, quantity: number) => {
     setBasket(prev => {
       const existingItem = prev.find(item => item.product.id === product.id)
-      if (existingItem) {
-        return prev.map(item =>
-          item.product.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        )
-      }
-      return [...prev, { product, quantity }]
+      return existingItem
+        ? prev.map(item => item.product.id === product.id 
+            ? { ...item, quantity: item.quantity + quantity } 
+            : item)
+        : [...prev, { product, quantity }]
     })
   }
 
-  const handleClothesFilter = (filters: {
-    priceRange: [number, number]
-    brands: string[]
-    materials: string[]
-    clothesType?: string[]
-  }) => {
-    const filtered = clothesList.filter(item => {
-      const priceMatch = item.price >= filters.priceRange[0] && item.price <= filters.priceRange[1]
-      const brandMatch = filters.brands.length === 0 || filters.brands.includes(item.brand)
-      const materialMatch = filters.materials.length === 0 || filters.materials.includes(item.material)
-      const typeMatch = !filters.clothesType || filters.clothesType.length === 0 || 
-                       filters.clothesType.includes(item.clothesType)
-      return priceMatch && brandMatch && materialMatch && typeMatch
-    })
-    setFilteredClothes(filtered)
-  }
-
-  const handleBagsFilter = (filters: {
-    priceRange: [number, number]
-    brands: string[]
-    materials: string[]
-  }) => {
-    const filtered = bagsList.filter(item => {
-      const priceMatch = item.price >= filters.priceRange[0] && item.price <= filters.priceRange[1]
-      const brandMatch = filters.brands.length === 0 || filters.brands.includes(item.brand)
-      const materialMatch = filters.materials.length === 0 || filters.materials.includes(item.material)
-      return priceMatch && brandMatch && materialMatch
-    })
-    setFilteredBags(filtered)
-  }
-
-  const handleShoesFilter = (filters: {
-    priceRange: [number, number]
-    brands: string[]
-    materials: string[]
-  }) => {
-    const filtered = shoesList.filter(item => {
-      const priceMatch = item.price >= filters.priceRange[0] && item.price <= filters.priceRange[1]
-      const brandMatch = filters.brands.length === 0 || filters.brands.includes(item.brand)
-      const materialMatch = filters.materials.length === 0 || filters.materials.includes(item.material)
-      return priceMatch && brandMatch && materialMatch
-    })
-    setFilteredShoes(filtered)
-  }
-
-  const FilterablePage = ({ 
-    title, 
-    items,
-    filteredItems, 
-    onFilterChange,
-    showClothesTypeFilter = false,
-    productType
-  }: {
-    title: string
-    items: any[]
-    filteredItems: any[]
-    onFilterChange: (filters: any) => void
-    showClothesTypeFilter?: boolean
-    productType?: 'clothes' | 'shoes' | 'bags'
-  }) => (
-    <div className="main-content">
-      <div className="products-section">
-        <h2 className="section-title">{title}</h2>
-        <TrendClothes 
-          products={filteredItems}
-          addToBasket={handleAddToBasket}
-          productType={productType}
-        />
-      </div>
-      
-      <div className="filter-section">
-        <FilterSearch 
-          items={items} 
-          onFilterChange={onFilterChange}
-          showClothesTypeFilter={showClothesTypeFilter}
-        />
-      </div>
-    </div>
-  )
-
-  if (isAuthenticated === null) {
-    return <div className="loading-screen">Загрузка...</div>
+  if (!authChecked) {
+    return <div className="loading-screen">Проверка авторизации...</div>
   }
 
   return (
@@ -170,6 +111,7 @@ function App() {
             <div className="trends-section">
               <h2 className="section-title">Хиты</h2>
               <TrendClothes 
+                products={specialProducts}
                 showAllSpecialsButton={true} 
                 addToBasket={handleAddToBasket}
               />
@@ -178,74 +120,142 @@ function App() {
             <Feedback />
           </>
         } />
-
         <Route path='/basket' element={
-          isAuthenticated 
-            ? <Basket basket={basket} setBasket={setBasket} />
-            : <Navigate to="/AuthForm" replace />
+          isAuthenticated ? <Basket basket={basket} setBasket={setBasket} /> : <Navigate to="/AuthForm" replace />
         } />
-
         <Route path='/brands' element={<Brands />} />
-
         <Route path='/AuthForm' element={
-          isAuthenticated 
-            ? <Navigate to="/" replace />
-            : <AuthForm setIsAuthenticated={setIsAuthenticated} />
+          isAuthenticated ? <Navigate to="/" replace /> : <AuthForm setIsAuthenticated={setIsAuthenticated} />
         } />
-        
-        <Route path='/contacts' element={
-          <div className="feedback-route">
-            <Feedback />
+        <Route path='/contacts' element={<Feedback />} />
+        <Route path='/product/:id' element={<ProductPage addToBasket={handleAddToBasket} />} />
+        <Route path='/sale' element={
+          <div className="trends-section">
+            <h2 className="section-title">Спецпредложения</h2>
+            <TrendClothes showAllSpecialsButton={false} addToBasket={handleAddToBasket} products={specialProducts}/>
           </div>
         } />
-
-        <Route path='/product/:id' element={
-          <ProductPage addToBasket={handleAddToBasket} />
-        } />
-
-        <Route path='/sale' element={
-          <>
-            <div className="trends-section">
-              <h2 className="section-title">Спецпредложения</h2>
-              <TrendClothes 
-                showAllSpecialsButton={true} 
-                addToBasket={handleAddToBasket}
-              />
-            </div>
-          </>
-        } />
-        
         <Route path='/clothes' element={
-          <FilterablePage 
+          <ProductsPage 
             title="Вся одежда"
-            filteredItems={filteredClothes}
-            onFilterChange={handleClothesFilter}
-            showClothesTypeFilter={true}
             productType="clothes"
+            addToBasket={handleAddToBasket}
+            showClothesTypeFilter={true}
           />
         } />
-        
         <Route path='/bags' element={
-          <FilterablePage 
-            title="Все Сумки"
-            filteredItems={filteredBags}
-            onFilterChange={handleBagsFilter}
+          <ProductsPage 
+            title="Все сумки"
             productType="bags"
+            addToBasket={handleAddToBasket}
           />
         } />
-        
         <Route path='/shoes' element={
-          <FilterablePage 
+          <ProductsPage 
             title="Вся обувь"
-            items={shoesList}
-            filteredItems={filteredShoes}
-            onFilterChange={handleShoesFilter}
             productType="shoes"
+            addToBasket={handleAddToBasket}
           />
         } />
       </Routes>
       <Footer />
     </Router>
+  )
+}
+
+interface ProductsPageProps {
+  title: string
+  productType: 'clothes' | 'shoes' | 'bags'
+  addToBasket: (product: Product, quantity: number) => void
+  showClothesTypeFilter?: boolean
+}
+
+function ProductsPage({ title, productType, addToBasket, showClothesTypeFilter = false }: ProductsPageProps) {
+  const [products, setProducts] = useState<Product[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true)
+        const response = await axios.get(`http://localhost:3000/product/full/${productType}`)
+        setProducts(response.data)
+        setError(null)
+      } catch (err) {
+        console.error(`Ошибка загрузки ${productType}:`, err)
+        setError('Не удалось загрузить товары')
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    loadProducts()
+  }, [productType])
+
+  const handleFilter = async (filters: any) => {
+    try {
+      const params = new URLSearchParams()
+      params.append('type', productType)
+      
+      if (filters.priceRange) {
+        params.append('minPrice', filters.priceRange[0])
+        params.append('maxPrice', filters.priceRange[1])
+      }
+      
+      if (filters.brands?.length) {
+        filters.brands.forEach((brand: string) => {
+          params.append('brands', brand)
+        })
+      }
+      
+      if (filters.materials?.length) {
+        filters.materials.forEach((material: string) => {
+          params.append('materials', material)
+        })
+      }
+      
+      if (filters.clothesType?.length && productType === 'clothes') {
+        filters.clothesType.forEach((type: string) => {
+          params.append('clothesType', type)
+        })
+      }
+
+      const response = await axios.get('http://localhost:3000/product/filter', { params })
+      setProducts(response.data)
+      setError(null)
+    } catch (err) {
+      console.error(`Ошибка фильтрации ${productType}:`, err)
+      setError('Ошибка при фильтрации товаров')
+    }
+  }
+
+  if (loading) {
+    return <div className="loading-screen">Загрузка товаров...</div>
+  }
+
+  if (error) {
+    return <div className="error-message">{error}</div>
+  }
+
+  return (
+    <div className="main-content">
+      <div className="products-section">
+        <h2 className="section-title">{title}</h2>
+        <TrendClothes 
+          products={products}
+          addToBasket={addToBasket}
+          productType={productType}
+        />
+      </div>
+      <div className="filter-section">
+        <FilterSearch 
+          items={products} 
+          onFilterChange={handleFilter}
+          showClothesTypeFilter={showClothesTypeFilter}
+        />
+      </div>
+    </div>
   )
 }
 

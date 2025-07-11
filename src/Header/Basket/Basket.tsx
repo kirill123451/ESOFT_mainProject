@@ -80,7 +80,7 @@ function Basket({ basket, setBasket }: HeaderProps) {
           {basket.map((item) => (
             <div key={item.product.id} className='itemCard'>
               <img 
-                src={item.product.img} 
+                src={item.product.imgUrl} 
                 alt={item.product.individualName} 
                 className='itemImage'
               />
