@@ -39,6 +39,43 @@
   font-style: italic;
 }
 
+.pp-product-rating {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.pp-rating-stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.pp-star {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.pp-star-full {
+  color: #f59e0b;
+}
+
+.pp-star-half {
+  color: #f59e0b;
+  opacity: 0.7;
+}
+
+.pp-star-empty {
+  color: #d1d5db;
+}
+
+.pp-rating-value {
+  margin-left: 8px;
+  font-size: 1rem;
+  color: #666;
+}
+
 .pp-product-price {
   font-size: 1.5rem;
   font-weight: 700;

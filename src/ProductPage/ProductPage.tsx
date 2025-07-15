@@ -17,34 +17,27 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
   const [error, setError] = useState<string | null>('')
 
   useEffect(() => {
-  if (!productId) {
-    setError('Неверный ID товара')
-    setLoading(false)
-    return
-  }
+    if (!productId) {
+      setError('Неверный ID товара')
+      setLoading(false)
+      return
+    }
 
-  axios.get(`http://localhost:3000/product/${productId}`)
-    .then(res => {
-      setProduct(res.data)
-      setLoading(false)
-    })
-    .catch(err => {
-      console.error('Ошибка при запросе:', err)
-      setError(err.response?.data?.error || err.message)
-      setLoading(false)
-    });
-}, [productId])
+    axios.get(`http://localhost:3000/product/${productId}`)
+      .then(res => {
+        setProduct(res.data)
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Ошибка при запросе:', err)
+        setError(err.response?.data?.error || err.message)
+        setLoading(false)
+      });
+  }, [productId])
 
   if (loading) return <div className="pp-product-not-found">Загрузка...</div>
   if (error) return <div className="pp-product-not-found">Ошибка: {error}</div>
   if (!product) return <div className="pp-product-not-found">Товар не найден</div>
-
-  const getProductType = (product: any): string => {
-    if (product.clothesType) return product.clothesType
-    if (product.shoesType) return product.shoesType
-    if (product.bagsType) return product.bagsType
-    return 'Неизвестный тип';
-  };
 
   const handleDecreaseQuantity = () => {
     setSelectedQuantity(prev => Math.max(1, prev - 1));
@@ -56,6 +49,35 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
 
   const handleAddToBasket = () => {
     addToBasket(product, selectedQuantity)
+  };
+
+  const renderStarRating = () => {
+    return (
+      <div className="pp-rating-stars">
+        <svg className="pp-star pp-star-full" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 
+          2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg className="pp-star pp-star-full" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 
+          2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg className="pp-star pp-star-full" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 
+          2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg className="pp-star pp-star-full" viewBox="0 0 24 24">
+          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 
+          2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+        </svg>
+        <svg className="pp-star pp-star-half" viewBox="0 0 24 24">
+          <path d="M22 9.24l-7.19-.62L12 2 9.19 8.63 2 9.24l5.46 4.73L5.
+          82 21 12 17.27 18.18 21l-1.63-7.03L22 9.24zM12 15.4V6.1l1.71 
+          4.04 4.38.38-3.32 2.88 1 4.28L12 15.4z"/>
+        </svg>
+        <span className="pp-rating-value">8/10</span>
+      </div>
+    );
   };
 
   return (
@@ -73,12 +95,16 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
         
         <div className="pp-product-brand">{product.brand}</div>
         
+        <div className="pp-product-rating">
+          {renderStarRating()}
+        </div>
+        
         <div className="pp-product-price">{product.price.toLocaleString('ru-RU')} ₽</div>
         
         <div className="pp-product-meta">
           <div className="pp-meta-item">
             <span className="pp-meta-label">Тип:</span>
-            <span className="pp-meta-value">{getProductType(product)}</span>
+            <span className="pp-meta-value">{product.product_type}</span>
           </div>
           <div className="pp-meta-item">
             <span className="pp-meta-label">Пол:</span>

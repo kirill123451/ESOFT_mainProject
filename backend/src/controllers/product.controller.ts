@@ -13,6 +13,7 @@ interface ProductResponse {
   price: number
   imgUrl: string
   isSpecial: boolean
+  product_type: string
 }
 
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
@@ -48,7 +49,8 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
       brand: dbProduct.brand,
       price: dbProduct.price,
       imgUrl: dbProduct.imgUrl,
-      isSpecial: dbProduct.isSpecial
+      isSpecial: dbProduct.isSpecial,
+      product_type: dbProduct.product_type
     };
 
     res.json(response)

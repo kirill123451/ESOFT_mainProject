@@ -14,7 +14,15 @@ router.get('/validate-token', async (req, res): Promise<void> => {
 
   try {
     const user = await getUserFromToken(token)
-    res.json({ isValid: !!user })
+    res.json({ isValid: !!user,
+      user: {
+        email: user?.email,
+        name: user?.name,
+        role: user?.role,
+        id: user?.id
+
+      }
+     })
   } catch {
     res.status(401).json({ isValid: false })
   }

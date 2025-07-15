@@ -1,74 +1,140 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { clothesList } from "../ClothesList";
-import type { clotheList } from "../ClothesList";
+import axios from 'axios';
+import type { Product } from './types';
 import './SearchField.css';
 
-function SearchField() {
-  const [search, setSearch] = useState('');
-  const [searchResults, setSearchResults] = useState<clotheList[]>([])
-  const resultsRef = useRef<HTMLDivElement>(null)
+interface SearchFieldProps {
+  userData?: {
+    role: 'USER' | 'ADMIN';
+  };
+}
+
+function SearchField({ userData }: SearchFieldProps) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [results, setResults] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const searchProducts = useCallback(async (term: string) => {
+    if (term.trim() === '') {
+      setResults([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+    
+    try {
+  const response = await axios.get<Product[]>('http://localhost:3000/product', {
+    params: {
+      search: term,
+      limit: 5
+    }
+  });
+
+  // Исправленная обработка ответа
+  if (response.data && Array.isArray(response.data)) {
+    setResults(response.data);
+  } else {
+    setResults([]);
+    setError('Некорректный формат данных');
+  }
+} catch (err) {
+  console.error('Ошибка поиска:', err);
+  setResults([]);
+  setError('Ошибка при загрузке данных');
+} finally {
+  setIsLoading(false);
+}
+  }, []);
+
+  useEffect(() => {
+    const debounceTimer = setTimeout(() => {
+      searchProducts(searchTerm);
+    }, 300);
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchTerm, searchProducts]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (resultsRef.current && !resultsRef.current.contains(event.target as Node)) {
-        setSearch('')
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsFocused(false);
       }
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSearch = (term: string) => {
-    setSearch(term);
-
-    if (term.trim() === '') {
-      setSearchResults([]);
-      return;
+  // Функция для безопасного отображения результатов
+  const renderResults = () => {
+    if (error) {
+      return <div className="no-results">{error}</div>;
     }
 
-    const resultsSearch = clothesList.filter(item =>
-      item.individualName.toLowerCase().includes(term.toLowerCase()) ||
-      item.brand.toLowerCase().includes(term.toLowerCase())
-    );
+    if (isLoading) {
+      return <div className="search-loading">Поиск...</div>;
+    }
 
-    setSearchResults(resultsSearch);
+    if (!Array.isArray(results) || results.length === 0) {
+      return <div className="no-results">Ничего не найдено</div>;
+    }
+
+    return results.map(product => (
+      <Link 
+        key={product.id} 
+        to={`/product/${product.id}`} 
+        className="search-result-item"
+        onClick={() => {
+          setSearchTerm('');
+          setIsFocused(false);
+        }}
+      >
+        <img 
+          src={product.imgUrl || '/images/placeholder.jpg'} 
+          alt={product.individualName} 
+          className="result-image" 
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+          }}
+        />
+        <div className="result-info">
+          <h4 className="result-title">
+            {product.individualName}
+            {product.isSpecial && <span className="sale-badge">SALE</span>}
+          </h4>
+          <div className="result-meta">
+            <span className="result-brand">{product.brand}</span>
+            <span className={`result-price ${product.isSpecial ? 'special-price' : ''}`}>
+              {product.price} ₽
+            </span>
+          </div>
+        </div>
+      </Link>
+    ));
   };
 
   return (
-    <div className="search-results-wrapper">
-      <div className="search-container" ref={resultsRef}>
-        <input
-          type="search"
-          value={search}
-          onChange={(e) => handleSearch(e.target.value)}
-          placeholder="Поиск"
-          className="search-input"
-        />
-        {search && (
-          <div className="search-result">
-            {searchResults.length > 0 ? (
-              searchResults.map(item => (
-                <Link key={item.id} to={`/product/${item.id}`} className="search-item-link">
-                  <div className="search-item">
-                    <img src={item.img} alt={item.individualName} className="search-item-img" />
-                    <div className="search-item-info">
-                      <div className="search-item-title">{item.individualName}</div>
-                      <div className="search-item-meta">
-                        <span className="search-item-brand">{item.brand}</span>
-                        <span className="search-item-price">{item.price} ₽</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))
-            ) : (
-              <p className="no-result">Не найдено</p>
-            )}
-          </div>
-        )}
-      </div>
+    <div className="search-field" ref={searchRef}>
+      <input
+        type="search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onFocus={() => setIsFocused(true)}
+        placeholder="Поиск товаров..."
+        className="search-input"
+        aria-label="Поиск товаров"
+      />
+      
+      {(isFocused && searchTerm) && (
+        <div className="search-results">
+          {renderResults()}
+        </div>
+      )}
     </div>
   );
 }

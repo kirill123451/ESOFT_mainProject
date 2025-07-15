@@ -13,6 +13,7 @@ import Brands from './Brands/Brands'
 import AuthForm from './AuthForm/AuthForm'
 import ProductPage from './ProductPage/ProductPage'
 import axios from 'axios'
+import Profile from './Profile/Profile'
 
 interface BasketItem {
   product: any
@@ -37,39 +38,64 @@ function App() {
   const [basket, setBasket] = useState<BasketItem[]>([])
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [authChecked, setAuthChecked] = useState<boolean>(false)
-  const [specialProducts, setSpecialProducts] = useState<Product[]>([]); // <-- Новое состояние
-  const [loadingSpecialProducts, setLoadingSpecialProducts] = useState(true); // <-- Загрузка
+  const [specialProducts, setSpecialProducts] = useState<Product[]>([])
+  const [loadingSpecialProducts, setLoadingSpecialProducts] = useState(true)
+  const [userData, setUserData] = useState({
+  email: '',
+  name: '',
+  role: 'USER',
+  id: ''
+});
 
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        setAuthChecked(true)
-        return
-      }
-      try {
-        const response = await fetch('http://localhost:3000/auth/validate-token', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
-        setIsAuthenticated(response.ok)
-        if (!response.ok) localStorage.removeItem('token')
-      } catch (error) {
-        console.error('Auth check failed:', error)
-        localStorage.removeItem('token')
-        setIsAuthenticated(false)
-      } finally {
-        setAuthChecked(true)
-      }
+  const checkAuth = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setAuthChecked(true);
+      return;
     }
-    checkAuth()
-  }, [])
+    
+    try {
+      const response = await fetch('http://localhost:3000/auth/validate-token', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (!response.ok) {
+        throw new Error('Invalid token');
+      }
+      
+      const data = await response.json();
+      
+      if (data.isValid && data.user) {
+        setIsAuthenticated(true)
+        setUserData({ 
+          email: data.user.email,
+          name: data.user.name || '',
+          role: data.user.role || 'USER',
+          id: data.user.id
+        });
+      } else {
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+      }
+    } catch (error) {
+      console.error('Auth check failed:', error);
+      localStorage.removeItem('token');
+      setIsAuthenticated(false);
+    } finally {
+      setAuthChecked(true);
+    }
+  };
+  
+  checkAuth();
+}, []);
 
   useEffect(() => {
     const loadSpecialProducts = async () => {
       try {
         setLoadingSpecialProducts(true);
-        const response = await axios.get('http://localhost:3000/product/special-offers'); // или другой endpoint
+        const response = await axios.get('http://localhost:3000/product/special-offers')
         setSpecialProducts(response.data);
       } catch (err) {
         console.error('Ошибка загрузки спецпредложений:', err);
@@ -103,7 +129,7 @@ function App() {
 
   return (
     <Router>
-      <Header basket={basket} isAuthenticated={isAuthenticated} onLogout={handleLogout} />
+      <Header basket={basket} isAuthenticated={isAuthenticated} onLogout={handleLogout} userData={userData} />
       <Routes>
         <Route path='/' element={
           <>
@@ -121,7 +147,10 @@ function App() {
           </>
         } />
         <Route path='/basket' element={
-          isAuthenticated ? <Basket basket={basket} setBasket={setBasket} /> : <Navigate to="/AuthForm" replace />
+          isAuthenticated ? <Basket basket={basket} setBasket={setBasket} userData={userData} /> : <Navigate to="/AuthForm" replace />
+        } />
+        <Route path='/profile' element={
+          isAuthenticated ? <Profile userData = {userData} /> : <Navigate to="/AuthForm" replace />
         } />
         <Route path='/brands' element={<Brands />} />
         <Route path='/AuthForm' element={
