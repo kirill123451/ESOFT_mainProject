@@ -138,11 +138,11 @@ export const filterProducts = async (req: Request, res: Response): Promise<void>
 
     // Фильтр по материалам (аналогичный стиль)
     if (material) {
-      const materialsList = Array.isArray(material) ? material : [material];
-      if (materialsList.length > 0) {
-        query += ` AND material IN (${materialsList.map(m => `'${m}'`).join(',')})`;
-      }
-    }
+  const materialsList = Array.isArray(material) ? material : [material];
+  if (materialsList.length > 0 ) {
+    query += ` AND material IN (${materialsList.map(m => `'${m}'`).join(',')})`;
+  }
+}
 
     // Фильтр по типу продукта (в зависимости от category)
     let typeFilter = clothesType;

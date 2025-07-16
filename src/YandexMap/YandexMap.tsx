@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 declare global {
   interface Window {
@@ -7,30 +7,19 @@ declare global {
 }
 
 function YandexMap() {
-  const mapRef = useRef<HTMLDivElement>(null)
-  const mapInstance = useRef<any>(null)
-  const scriptRef = useRef<HTMLScriptElement | null>(null)
+  const mapRef = useRef<HTMLDivElement>(null);
+  const mapInstance = useRef<any>(null);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
   useEffect(() => {
-    if (mapInstance.current) return;
-    if (window.ymaps) {
-      initMap();
-      return;
-    }
+    if (mapInstance.current || scriptLoaded) return;
 
-    if (!document.querySelector('script[src*="api-maps.yandex.ru"]')) {
-      const script = document.createElement('script');
-      script.src = `https://api-maps.yandex.ru/2.1/?apikey=ba1fe2e3-0c27-4dc2-904e-3d688007c713&lang=ru_RU`;
-      script.async = true;
-      script.onload = initMap;
-      document.body.appendChild(script);
-      scriptRef.current = script;
-    }
-
-    function initMap() {
+    const initMap = () => {
       if (!mapRef.current || mapInstance.current) return;
 
       window.ymaps.ready(() => {
+        if (mapInstance.current) return;
+
         mapInstance.current = new window.ymaps.Map(mapRef.current, {
           center: [57.1524, 65.5343],
           zoom: 12,
@@ -78,11 +67,23 @@ function YandexMap() {
           
           mapInstance.current.geoObjects.add(placemark);
         });
-
-        mapInstance.current.events.add('actionend', () => {
-          console.log('Текущий центр карты:', mapInstance.current.getCenter());
-        });
       });
+    };
+
+    if (window.ymaps) {
+      initMap();
+      return;
+    }
+
+    if (!document.querySelector('script[src*="api-maps.yandex.ru"]')) {
+      const script = document.createElement('script');
+      script.src = `https://api-maps.yandex.ru/2.1/?apikey=ba1fe2e3-0c27-4dc2-904e-3d688007c713&lang=ru_RU`;
+      script.async = true;
+      script.onload = () => {
+        setScriptLoaded(true);
+        initMap();
+      };
+      document.body.appendChild(script);
     }
 
     return () => {
@@ -90,12 +91,8 @@ function YandexMap() {
         mapInstance.current.destroy();
         mapInstance.current = null;
       }
-      if (scriptRef.current) {
-        document.body.removeChild(scriptRef.current);
-        scriptRef.current = null;
-      }
     };
-  }, []);
+  }, [scriptLoaded]);
 
   return (
     <div 
@@ -105,7 +102,7 @@ function YandexMap() {
         height: '500px',
         borderRadius: '20px',
         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-        margin: '20px auto', // Центрируем с помощью margin: auto
+        margin: '20px auto',
       }} 
     />
   );

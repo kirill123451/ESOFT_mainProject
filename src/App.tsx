@@ -240,7 +240,7 @@ function ProductsPage({ title, productType, addToBasket, showClothesTypeFilter =
       
       if (filters.materials?.length) {
         filters.materials.forEach((material: string) => {
-          params.append('materials', material)
+          params.append('material', material)
         })
       }
       
