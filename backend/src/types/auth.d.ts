@@ -10,10 +10,10 @@ export interface LoginRequest {
 }
 
 export interface PasswordResetRequest {
-  email: string;
+  email: string
 }
 
 export interface PasswordReset {
-  token: string;
-  newPassword: string;
+  token: string
+  newPassword: string
 }

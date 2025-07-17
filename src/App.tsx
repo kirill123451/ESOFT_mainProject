@@ -9,7 +9,6 @@ import './App.css'
 import Feedback from './Feedback/Feedback'
 import Footer from './Footer/Footer'
 import Basket from './Header/Basket/Basket'
-import Brands from './Brands/Brands'
 import AuthForm from './AuthForm/AuthForm'
 import ProductPage from './ProductPage/ProductPage'
 import axios from 'axios'
@@ -45,27 +44,27 @@ function App() {
   name: '',
   role: 'USER',
   id: ''
-});
+})
 
 
   useEffect(() => {
   const checkAuth = async () => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     if (!token) {
-      setAuthChecked(true);
-      return;
+      setAuthChecked(true)
+      return
     }
     
     try {
       const response = await fetch('http://localhost:3000/auth/validate-token', {
         headers: { 'Authorization': `Bearer ${token}` }
-      });
+      })
       
       if (!response.ok) {
-        throw new Error('Invalid token');
+        throw new Error('Invalid token')
       }
       
-      const data = await response.json();
+      const data = await response.json()
       
       if (data.isValid && data.user) {
         setIsAuthenticated(true)
@@ -74,37 +73,37 @@ function App() {
           name: data.user.name || '',
           role: data.user.role || 'USER',
           id: data.user.id
-        });
+        })
       } else {
-        localStorage.removeItem('token');
-        setIsAuthenticated(false);
+        localStorage.removeItem('token')
+        setIsAuthenticated(false)
       }
     } catch (error) {
-      console.error('Auth check failed:', error);
-      localStorage.removeItem('token');
-      setIsAuthenticated(false);
+      console.error('Auth check failed:', error)
+      localStorage.removeItem('token')
+      setIsAuthenticated(false)
     } finally {
-      setAuthChecked(true);
+      setAuthChecked(true)
     }
-  };
+  }
   
-  checkAuth();
-}, []);
+  checkAuth()
+}, [])
 
   useEffect(() => {
     const loadSpecialProducts = async () => {
       try {
-        setLoadingSpecialProducts(true);
+        setLoadingSpecialProducts(true)
         const response = await axios.get('http://localhost:3000/product/special-offers')
-        setSpecialProducts(response.data);
+        setSpecialProducts(response.data)
       } catch (err) {
-        console.error('Ошибка загрузки спецпредложений:', err);
+        console.error('Ошибка загрузки спецпредложений:', err)
       } finally {
-        setLoadingSpecialProducts(false);
+        setLoadingSpecialProducts(false)
       }
-    };
-    loadSpecialProducts();
-  }, []);
+    }
+    loadSpecialProducts()
+  }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -152,7 +151,6 @@ function App() {
         <Route path='/profile' element={
           isAuthenticated ? <Profile userData = {userData} /> : <Navigate to="/AuthForm" replace />
         } />
-        <Route path='/brands' element={<Brands />} />
         <Route path='/AuthForm' element={
           isAuthenticated ? <Navigate to="/" replace /> : <AuthForm setIsAuthenticated={setIsAuthenticated} />
         } />

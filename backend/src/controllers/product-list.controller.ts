@@ -1,25 +1,23 @@
-import { Request, Response } from 'express';
-import prisma from '../prisma/client';
+import { Request, Response } from 'express'
+import prisma from '../prisma/client'
 
 interface ProductFromDB {
-  id: number;
-  individualName: string;
-  clothesType?: string;  // Изменено на clothesType (как в VIEW)
-  gender: string;
-  color: string;
-  material: string;
-  brand: string;
-  price: number;
-  imgUrl: string;
-  product_type: string;
-  isSpecial: boolean;
+  id: number
+  individualName: string
+  clothesType?: string
+  gender: string
+  color: string
+  material: string
+  brand: string
+  price: number
+  imgUrl: string
+  product_type: string
+  isSpecial: boolean
 }
 
 export const getProductsList = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { type, special, search } = req.query;
-    
-    // Простой запрос, так как в VIEW уже есть объединенные данные
+    const { type, special, search } = req.query
     let query = `
       SELECT 
         id, 
@@ -34,39 +32,39 @@ export const getProductsList = async (req: Request, res: Response): Promise<void
         "isSpecial", 
         "product_type"
       FROM "AllProducts"
-    `;
+    `
     
-    const conditions: string[] = [];
-    const params: any[] = [];
+    const conditions: string[] = []
+    const params: any[] = []
     
     if (type) {
-      conditions.push(`"product_type" = $${params.length + 1}`);
-      params.push(type);
+      conditions.push(`"product_type" = $${params.length + 1}`)
+      params.push(type)
     }
     
     if (special === 'true') {
-      conditions.push(`"isSpecial" = true`);
+      conditions.push(`"isSpecial" = true`)
     }
     
     if (search) {
       conditions.push(
         `("individualName" ILIKE $${params.length + 1} OR brand ILIKE $${params.length + 1})`
-      );
-      params.push(`%${search}%`);
+      )
+      params.push(`%${search}%`)
     }
     
     if (conditions.length > 0) {
-      query += ` WHERE ${conditions.join(' AND ')}`;
+      query += ` WHERE ${conditions.join(' AND ')}`
     }
     
-    query += ' LIMIT 20';
+    query += ' LIMIT 20'
 
-    const products = await prisma.$queryRawUnsafe<ProductFromDB[]>(query, ...params);
+    const products = await prisma.$queryRawUnsafe<ProductFromDB[]>(query, ...params)
 
-    res.json(products.map(product => ({
+    res.json(products.map((product: ProductFromDB) => ({
       id: product.id,
       individualName: product.individualName,
-      type: product.clothesType, // Используем значение из clothesType/bagType/shoesType
+      type: product.clothesType,
       gender: product.gender,
       color: product.color,
       material: product.material,
@@ -75,12 +73,12 @@ export const getProductsList = async (req: Request, res: Response): Promise<void
       imgUrl: product.imgUrl,
       productType: product.product_type,
       isSpecial: product.isSpecial
-    })));
+    })))
   } catch (err) {
-    console.error('Ошибка получения списка товаров:', err);
+    console.error('Ошибка получения списка товаров:', err)
     res.status(500).json({ 
       success: false,
       error: 'Ошибка сервера'
-    });
+    })
   }
-};
+}

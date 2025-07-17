@@ -1,4 +1,3 @@
-/* Основные стили контейнера */
 .profile {
   max-width: 800px;
   margin: 0 auto;
@@ -19,7 +18,6 @@
   padding-bottom: 0.5rem;
 }
 
-/* Стили для табов */
 .profile-tabs {
   display: flex;
   margin-bottom: 2rem;
@@ -56,7 +54,6 @@
   background-color: #3498db;
 }
 
-/* Стили для информации профиля */
 .profile-info {
   background-color: white;
   padding: 2rem;
@@ -89,7 +86,6 @@
   flex-grow: 1;
 }
 
-/* Стили для кнопки обновления */
 .refresh-button {
   display: block;
   margin: 2rem auto 0;
@@ -112,14 +108,12 @@
   cursor: not-allowed;
 }
 
-/* Индикатор загрузки */
 .loading-indicator {
   color: #7f8c8d;
   font-size: 0.9rem;
   margin-left: 0.5rem;
 }
 
-/* Стили для админ-секции */
 .admin-section {
   background-color: white;
   padding: 2rem;
@@ -134,7 +128,6 @@
   text-align: center;
 }
 
-/* Бейдж роли */
 .field-value::after {
   content: '';
   display: inline-block;
@@ -157,7 +150,6 @@
   color: white;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .profile {
     padding: 1rem;

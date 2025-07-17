@@ -1,18 +1,18 @@
-import { Link } from 'react-router-dom';
-import SearchField from './SearchField';
-import { FiShoppingBag, FiUser, FiLogOut } from 'react-icons/fi';
-import type { BasketItem, UserData } from './types';
-import './Header.css';
+import { Link } from 'react-router-dom'
+import SearchField from './SearchField'
+import { FiShoppingBag, FiUser, FiLogOut } from 'react-icons/fi'
+import type { BasketItem, UserData } from './types'
+import './Header.css'
 
 interface HeaderProps {
-  basket?: BasketItem[];
-  isAuthenticated: boolean;
-  onLogout: () => void;
-  userData?: UserData;
+  basket?: BasketItem[]
+  isAuthenticated: boolean
+  onLogout: () => void
+  userData?: UserData
 }
 
 function Header({ basket = [], isAuthenticated, onLogout, userData }: HeaderProps) {
-  const totalItems = basket.reduce((sum, item) => sum + item.quantity, 0);
+  const totalItems = basket.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <header className="vintage-header">
@@ -62,7 +62,7 @@ function Header({ basket = [], isAuthenticated, onLogout, userData }: HeaderProp
         </div>
       </div>
     </header>
-  );
+  )
 }
 
-export default Header;
+export default Header

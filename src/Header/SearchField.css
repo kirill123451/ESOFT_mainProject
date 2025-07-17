@@ -1,4 +1,3 @@
-/* SearchField.css */
 .search-field {
   position: relative;
   width: 130%;
@@ -120,7 +119,6 @@
   font-size: 14px;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .search-field {
     max-width: 100%;

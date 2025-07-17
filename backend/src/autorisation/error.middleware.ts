@@ -14,7 +14,7 @@ export const errorHandler = (
         path: e.path,
         message: e.message
       }))
-    });
+    })
   }
   
   res.status(500).json({ error: 'Internal Server Error' })

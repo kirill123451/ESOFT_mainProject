@@ -1,48 +1,48 @@
-import { useState } from "react";
-import PriceSlider from './PriceSlider/PriceSlider';
-import './FilterSearchClothes.css';
+import { useState } from "react"
+import PriceSlider from './PriceSlider/PriceSlider'
+import './FilterSearchClothes.css'
 
 interface Item {
-  id: number;
-  individualName: string;
-  clothesType?: string;
-  shoesType?: string;
-  bagsType?: string;
-  gender: string;
-  color: string;
-  material: string;
-  brand: string;
-  price: number;
-  imgUrl: string;
-  isSpecial: boolean;
-  productType?: 'clothes' | 'shoes' | 'bags';
+  id: number
+  individualName: string
+  clothesType?: string
+  shoesType?: string
+  bagsType?: string
+  gender: string
+  color: string
+  material: string
+  brand: string
+  price: number
+  imgUrl: string
+  isSpecial: boolean
+  productType?: 'clothes' | 'shoes' | 'bags'
 }
 
 export interface Filters {
-  priceRange: [number, number];
-  brands?: string[];
-  materials?: string[];
-  clothesType?: string[];
+  priceRange: [number, number]
+  brands?: string[]
+  materials?: string[]
+  clothesType?: string[]
 }
 
 interface FilterSearchProps {
-  items: Item[];
-  onFilterChange: (filters: Filters) => void;
-  showClothesTypeFilter?: boolean;
+  items: Item[]
+  onFilterChange: (filters: Filters) => void
+  showClothesTypeFilter?: boolean
 }
 
 function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: FilterSearchProps) {
-  const [priceRange, setPriceRange] = useState<[number, number]>([1000, 5000]);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [materials, setMaterials] = useState<string[]>([]);
-  const [clothesTypes, setClothesTypes] = useState<string[]>([]);
-  const [filtersChanged, setFiltersChanged] = useState(false);
+  const [priceRange, setPriceRange] = useState<[number, number]>([1000, 5000])
+  const [brands, setBrands] = useState<string[]>([])
+  const [materials, setMaterials] = useState<string[]>([])
+  const [clothesTypes, setClothesTypes] = useState<string[]>([])
+  const [filtersChanged, setFiltersChanged] = useState(false)
 
-  const allBrands = [...new Set(items.map(item => item.brand).filter(Boolean) as string[])];
-  const allMaterials = [...new Set(items.map(item => item.material).filter(Boolean) as string[])];
+  const allBrands = [...new Set(items.map(item => item.brand).filter(Boolean) as string[])]
+  const allMaterials = [...new Set(items.map(item => item.material).filter(Boolean) as string[])]
   const allClothesTypes = showClothesTypeFilter 
     ? [...new Set(items.map(item => item.clothesType).filter(Boolean) as string[])] 
-    : [];
+    : []
 
   const applyFilters = () => {
     const filters: Filters = {
@@ -50,50 +50,50 @@ function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: 
       ...(brands.length > 0 && { brands }),
       ...(materials.length > 0 && { materials }),
       ...(showClothesTypeFilter && clothesTypes.length > 0 && { clothesType: clothesTypes })
-    };
-    onFilterChange(filters);
-    setFiltersChanged(false);
-  };
+    }
+    onFilterChange(filters)
+    setFiltersChanged(false)
+  }
 
   const handlePriceChange = (newRange: [number, number]) => {
-    setPriceRange(newRange);
-    setFiltersChanged(true);
-  };
+    setPriceRange(newRange)
+    setFiltersChanged(true)
+  }
 
   const toggleBrand = (brand: string) => {
     setBrands(prevBrands => 
       prevBrands.includes(brand) 
         ? prevBrands.filter(b => b !== brand) 
         : [...prevBrands, brand]
-    );
-    setFiltersChanged(true);
-  };
+    )
+    setFiltersChanged(true)
+  }
 
   const toggleMaterial = (material: string) => {
     setMaterials(prevMaterials => 
       prevMaterials.includes(material) 
         ? prevMaterials.filter(m => m !== material) 
         : [...prevMaterials, material]
-    );
-    setFiltersChanged(true);
-  };
+    )
+    setFiltersChanged(true)
+  }
 
   const toggleClothesType = (type: string) => {
     setClothesTypes(prevTypes => 
       prevTypes.includes(type) 
         ? prevTypes.filter(t => t !== type) 
         : [...prevTypes, type]
-    );
-    setFiltersChanged(true);
-  };
+    )
+    setFiltersChanged(true)
+  }
 
   const resetFilters = () => {
-    setPriceRange([1000, 5000]);
-    setBrands([]);
-    setMaterials([]);
-    setClothesTypes([]);
-    setFiltersChanged(true);
-  };
+    setPriceRange([1000, 5000])
+    setBrands([])
+    setMaterials([])
+    setClothesTypes([])
+    setFiltersChanged(true)
+  }
 
   return (
     <div className="filter-panel">
@@ -166,7 +166,7 @@ function FilterSearch({ items, onFilterChange, showClothesTypeFilter = false }: 
         </button>
       </div>
     </div>
-  );
+  )
 }
 
-export default FilterSearch;
+export default FilterSearch

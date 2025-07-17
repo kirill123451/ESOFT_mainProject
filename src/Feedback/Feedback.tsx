@@ -1,5 +1,5 @@
-import YandexMap from '../YandexMap/YandexMap';
-import './Feedback.css';
+import YandexMap from '../YandexMap/YandexMap'
+import './Feedback.css'
 
 function Feedback () {
   return (
@@ -52,7 +52,7 @@ function Feedback () {
         <YandexMap />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Feedback;
+export default Feedback

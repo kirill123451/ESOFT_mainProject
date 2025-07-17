@@ -1,49 +1,49 @@
-import { useEffect } from 'react';
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
-import './PriceSlider.css';
+import { useEffect } from 'react'
+import RangeSlider from 'react-range-slider-input'
+import 'react-range-slider-input/dist/style.css'
+import './PriceSlider.css'
 
 interface PriceSliderProps {
-  currentPrice: [number, number];
-  onPriceChange: (value: [number, number]) => void;
+  currentPrice: [number, number]
+  onPriceChange: (value: [number, number]) => void
 }
 
 function PriceSlider({ currentPrice, onPriceChange }: PriceSliderProps) {
   useEffect(() => {
-    console.log('[PriceSlider] Текущий диапазон цен:', currentPrice);
-  }, [currentPrice]);
+    console.log('[PriceSlider] Текущий диапазон цен:', currentPrice)
+  }, [currentPrice])
 
   const handleMinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minChange = parseInt(e.target.value, 10);
-    let newRange: [number, number] = [minChange, currentPrice[1]];
+    const minChange = parseInt(e.target.value, 10)
+    let newRange: [number, number] = [minChange, currentPrice[1]]
     
     if (minChange >= 0 && minChange <= currentPrice[1]) {
-      newRange = [minChange, currentPrice[1]];
+      newRange = [minChange, currentPrice[1]]
     } else if (minChange > currentPrice[1]) {
-      newRange = [currentPrice[1], currentPrice[1]];
+      newRange = [currentPrice[1], currentPrice[1]]
     } else {
-      newRange = [0, currentPrice[1]];
+      newRange = [0, currentPrice[1]]
     }
     
-    console.log('[PriceSlider] Изменение минимальной цены:', newRange);
-    onPriceChange(newRange);
-  };
+    console.log('[PriceSlider] Изменение минимальной цены:', newRange)
+    onPriceChange(newRange)
+  }
 
   const handleMaxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const maxChange = parseInt(e.target.value, 10);
-    let newRange: [number, number] = [currentPrice[0], maxChange];
+    const maxChange = parseInt(e.target.value, 10)
+    let newRange: [number, number] = [currentPrice[0], maxChange]
     
     if (maxChange >= 0) {
-      newRange = [currentPrice[0], maxChange];
+      newRange = [currentPrice[0], maxChange]
     } else if (maxChange < currentPrice[0]) {
-      newRange = [currentPrice[0], currentPrice[0]];
+      newRange = [currentPrice[0], currentPrice[0]]
     } else {
-      newRange = [currentPrice[0], 0];
+      newRange = [currentPrice[0], 0]
     }
     
-    console.log('[PriceSlider] Изменение максимальной цены:', newRange);
-    onPriceChange(newRange);
-  };
+    console.log('[PriceSlider] Изменение максимальной цены:', newRange)
+    onPriceChange(newRange)
+  }
 
   return (
     <div className='price-slider-container'>
@@ -67,8 +67,8 @@ function PriceSlider({ currentPrice, onPriceChange }: PriceSliderProps) {
           max={5000} 
           step={10} 
           onInput={(value) => {
-            console.log('[PriceSlider] Изменение слайдера:', value);
-            onPriceChange(value);
+            console.log('[PriceSlider] Изменение слайдера:', value)
+            onPriceChange(value)
           }} 
           value={currentPrice} 
         />
@@ -78,7 +78,7 @@ function PriceSlider({ currentPrice, onPriceChange }: PriceSliderProps) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default PriceSlider;
+export default PriceSlider

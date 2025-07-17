@@ -3,10 +3,10 @@ import sliderBoots from './photoForSlider/slider_boots.jpg'
 
 
 interface Slide {
-  img: string;
-  title: string;
-  description: string;
-  buttonText: string;
+  img: string
+  title: string
+  description: string
+  buttonText: string
 }
 
 export const slides:Slide[]= [

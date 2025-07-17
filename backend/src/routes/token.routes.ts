@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { getUserFromToken } from '../autorisation/JWT.service';
+import { Router } from 'express'
+import { getUserFromToken } from '../autorisation/JWT.service'
 
-const router = Router();
+const router = Router()
 
 router.get('/validate-token', async (req, res): Promise<void> => {
   const authHeader = req.headers.authorization
@@ -28,4 +28,4 @@ router.get('/validate-token', async (req, res): Promise<void> => {
   }
 })
 
-export default router;
+export default router

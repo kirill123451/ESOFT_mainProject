@@ -9,7 +9,7 @@ export const authMidl = async (req: Request, res: Response, next: NextFunction):
             return
         }
         
-        const user = await getUserFromToken(token);
+        const user = await getUserFromToken(token)
         if (!user) {
             res.status(401).json({ error: 'Нет авторизации' })
             return
@@ -20,4 +20,4 @@ export const authMidl = async (req: Request, res: Response, next: NextFunction):
     } catch (err) {
         res.status(401).json({ error: "Нет авторизации" })
     }
-};
+}

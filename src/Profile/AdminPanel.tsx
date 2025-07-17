@@ -1,19 +1,19 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 import './AdminPanel.css'
 
 interface Product {
-  id: number;
-  individualName: string;
-  category: 'clothes' | 'shoes' | 'bags';
-  type: string;
-  gender: string;
-  color: string;
-  material: string;
-  brand: string;
-  price: number;
-  imgUrl: string;
-  isSpecial: boolean;
+  id: number
+  individualName: string
+  category: 'clothes' | 'shoes' | 'bags'
+  type: string
+  gender: string
+  color: string
+  material: string
+  brand: string
+  price: number
+  imgUrl: string
+  isSpecial: boolean
 }
 
 const AdminPanel = () => {
@@ -30,42 +30,41 @@ const AdminPanel = () => {
     price: '',
     imgUrl: '',
     isSpecial: ''
-  });
+  })
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [editingId, setEditingId] = useState<number | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [products, setProducts] = useState<Product[]>([])
+  const [editingId, setEditingId] = useState<number | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const fetchProducts = async () => {
-  setIsLoading(true);
+  setIsLoading(true)
   try {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem('token')
     const { data } = await axios.get('http://localhost:3000/api/admin/products', {
       headers: { Authorization: `Bearer ${token}` }
-    });
+    })
     
-    // Добавьте проверку, что data - массив
     if (Array.isArray(data)) {
-      setProducts(data);
+      setProducts(data)
     } else {
-      setProducts([]); // Установите пустой массив, если данные невалидны
-      console.error('Ожидался массив продуктов, но получено:', data);
+      setProducts([])
+      console.error('Ожидался массив продуктов, но получено:', data)
     }
     
-    setError('');
+    setError('')
   } catch (err) {
-    setError('Ошибка загрузки товаров');
-    console.error(err);
-    setProducts([]); // Установите пустой массив при ошибке
+    setError('Ошибка загрузки товаров')
+    console.error(err)
+    setProducts([])
   } finally {
-    setIsLoading(false);
+    setIsLoading(false)
   }
-};
+}
   
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault()
+    setIsLoading(true)
     
     const productData = {
       ...formData,
@@ -75,35 +74,35 @@ const AdminPanel = () => {
        formData.category === 'shoes' ? 'shoesType' : 'bagType']: 
        formData[formData.category === 'clothes' ? 'clothesType' : 
        formData.category === 'shoes' ? 'shoesType' : 'bagType']
-    };
+    }
 
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (editingId) {
         await axios.put(`http://localhost:3000/api/admin/products/${editingId}`, {
           ...productData,
           category: formData.category
         }, {
           headers: { Authorization: `Bearer ${token}` }
-        });
+        })
       } else {
         await axios.post('http://localhost:3000/api/admin/products', {
           ...productData,
           category: formData.category
         }, {
           headers: { Authorization: `Bearer ${token}` }
-        });
+        })
       }
-      resetForm();
-      await fetchProducts();
-      setError('');
+      resetForm()
+      await fetchProducts()
+      setError('')
     } catch (err) {
-      setError('Ошибка сохранения товара');
-      console.error(err);
+      setError('Ошибка сохранения товара')
+      console.error(err)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
   
   const handleEdit = (product: Product) => {
     setFormData({
@@ -119,29 +118,29 @@ const AdminPanel = () => {
       price: String(product.price),
       imgUrl: product.imgUrl,
       isSpecial: product.isSpecial ? 'yes' : 'no'
-    });
-    setEditingId(product.id);
-  };
+    })
+    setEditingId(product.id)
+  }
 
   const handleDelete = async (id: number, category: 'clothes' | 'shoes' | 'bags') => {
     if (window.confirm('Удалить этот товар?')) {
-      setIsLoading(true);
+      setIsLoading(true)
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('token')
         await axios.delete(`http://localhost:3000/api/admin/products/${id}`, {
           data: { category },
           headers: { Authorization: `Bearer ${token}` }
-        });
-        await fetchProducts();
-        setError('');
+        })
+        await fetchProducts()
+        setError('')
       } catch (err) {
-        setError('Ошибка удаления товара');
-        console.error(err);
+        setError('Ошибка удаления товара')
+        console.error(err)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-  };
+  }
 
   const resetForm = () => {
     setFormData({
@@ -157,13 +156,13 @@ const AdminPanel = () => {
       price: '',
       imgUrl: '#',
       isSpecial: 'no'
-    });
-    setEditingId(null);
-  };
+    })
+    setEditingId(null)
+  }
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    fetchProducts()
+  }, [])
 
   return (
     <div className="admin-panel">
@@ -394,7 +393,7 @@ const AdminPanel = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AdminPanel;
+export default AdminPanel

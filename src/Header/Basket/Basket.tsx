@@ -1,66 +1,66 @@
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import type { BasketItem, Product, UserData } from '../types'
-import './Basket.css';
-import axios from 'axios';
+import './Basket.css'
+import axios from 'axios'
 
 interface BasketProps {
-  basket: BasketItem[];
-  setBasket: (newBasket: BasketItem[]) => void;
-  userData?: UserData;
+  basket: BasketItem[]
+  setBasket: (newBasket: BasketItem[]) => void
+  userData?: UserData
 }
 
 function Basket({ basket, setBasket, userData }: BasketProps) {
   useEffect(() => {
-    const savedBasket = localStorage.getItem('basket');
+    const savedBasket = localStorage.getItem('basket')
     if (savedBasket) {
       try {
-        const parsed = JSON.parse(savedBasket);
+        const parsed = JSON.parse(savedBasket)
         if (Array.isArray(parsed)) {
-          setBasket(parsed);
+          setBasket(parsed)
         }
       } catch (e) {
-        console.error('Ошибка загрузки корзины:', e);
-        localStorage.removeItem('basket');
+        console.error('Ошибка загрузки корзины:', e)
+        localStorage.removeItem('basket')
       }
     }
-  }, [setBasket]);
+  }, [setBasket])
 
   useEffect(() => {
     if (basket.length > 0) {
-      localStorage.setItem('basket', JSON.stringify(basket));
+      localStorage.setItem('basket', JSON.stringify(basket))
     } else {
-      localStorage.removeItem('basket');
+      localStorage.removeItem('basket')
     }
-  }, [basket]);
+  }, [basket])
 
   function deleteFromBasket(productToDelete: Product) {
     const updatedBasket = basket.filter(
       (item) => item.product.id !== productToDelete.id
-    );
-    setBasket(updatedBasket);
+    )
+    setBasket(updatedBasket)
   }
 
   function updateQuantity(product: Product, newQuantity: number) {
-    if (newQuantity < 1) newQuantity = 1;
+    if (newQuantity < 1) newQuantity = 1
 
     const updatedBasket = basket.map(item => 
       item.product.id === product.id
         ? { ...item, quantity: newQuantity }
         : item
-    );
+    )
     
-    setBasket(updatedBasket);
+    setBasket(updatedBasket)
   }
 
   function clearBasket() {
-    setBasket([]);
-    localStorage.removeItem('basket');
+    setBasket([])
+    localStorage.removeItem('basket')
   }
 
   async function handleCheckout() {
     if (!userData) {
-      alert('Для оформления заказа необходимо авторизоваться');
-      return;
+      alert('Для оформления заказа необходимо авторизоваться')
+      return
     }
     
     try {
@@ -72,23 +72,23 @@ function Basket({ basket, setBasket, userData }: BasketProps) {
           price: item.product.price
         })),
         total: total
-      };
+      }
 
       const response = await axios.post('http://localhost:3000/api/orders', orderData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-      });
+      })
 
-      alert(`Спасибо за заказ, ${userData.name || userData.email}! Номер вашего заказа: #${response.data.orderId}`);
-      clearBasket();
+      alert(`Спасибо за заказ, ${userData.name || userData.email}! Номер вашего заказа: #${response.data.orderId}`)
+      clearBasket()
     } catch (error) {
-      console.error('Ошибка оформления заказа:', error);
-      alert('Произошла ошибка при оформлении заказа');
+      console.error('Ошибка оформления заказа:', error)
+      alert('Произошла ошибка при оформлении заказа')
     }
   }
 
-  const total = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const total = basket.reduce((sum, item) => sum + (item.product.price * item.quantity), 0)
 
   return (
     <div className='basketContainer'>
@@ -163,7 +163,7 @@ function Basket({ basket, setBasket, userData }: BasketProps) {
         </>
       )}
     </div>
-  );
+  )
 }
 
-export default Basket;  
+export default Basket

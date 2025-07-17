@@ -1,7 +1,7 @@
-import { useParams } from 'react-router-dom';
-import './ProductPage.css';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useParams } from 'react-router-dom'
+import './ProductPage.css'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 interface ProductPageProps {
   addToBasket: (product: any, quantity: number) => void
@@ -32,7 +32,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
         console.error('Ошибка при запросе:', err)
         setError(err.response?.data?.error || err.message)
         setLoading(false)
-      });
+      })
   }, [productId])
 
   if (loading) return <div className="pp-product-not-found">Загрузка...</div>
@@ -40,16 +40,16 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
   if (!product) return <div className="pp-product-not-found">Товар не найден</div>
 
   const handleDecreaseQuantity = () => {
-    setSelectedQuantity(prev => Math.max(1, prev - 1));
-  };
+    setSelectedQuantity(prev => Math.max(1, prev - 1))
+  }
 
   const handleIncreaseQuantity = () => {
-    setSelectedQuantity(prev => prev + 1);
-  };
+    setSelectedQuantity(prev => prev + 1)
+  }
 
   const handleAddToBasket = () => {
     addToBasket(product, selectedQuantity)
-  };
+  }
 
   const renderStarRating = () => {
     return (
@@ -77,8 +77,8 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
         </svg>
         <span className="pp-rating-value">8/10</span>
       </div>
-    );
-  };
+    )
+  }
 
   return (
     <div className="pp-product-page">
@@ -152,7 +152,7 @@ const ProductPage: React.FC<ProductPageProps> = ({ addToBasket }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ProductPage;
+export default ProductPage

@@ -1,27 +1,27 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
-import './TrendClothes.css';
+import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import './TrendClothes.css'
 
 interface Product {
-  id: number;
-  individualName: string;
-  clothesType?: string;
-  shoesType?: string;
-  bagsType?: string;
-  gender: string;
-  color: string;
-  material: string;
-  brand: string;
-  price: number;
-  imgUrl: string;
-  isSpecial: boolean;
+  id: number
+  individualName: string
+  clothesType?: string
+  shoesType?: string
+  bagsType?: string
+  gender: string
+  color: string
+  material: string
+  brand: string
+  price: number
+  imgUrl: string
+  isSpecial: boolean
 }
 
 interface TrendClothesProps {
-  products: Product[];
-  showAllSpecialsButton?: boolean;
-  addToBasket?: (product: Product, quantity: number) => void;
-  appliedFilters?: any;
+  products: Product[]
+  showAllSpecialsButton?: boolean
+  addToBasket?: (product: Product, quantity: number) => void
+  appliedFilters?: any
   productType?: 'clothes' | 'shoes' | 'bags'
 }
 
@@ -31,26 +31,26 @@ export default function TrendClothes({
   addToBasket,  
   appliedFilters
 }: TrendClothesProps) {
-  const [hoveredProductId, setHoveredProductId] = useState<number | null>(null);
-  const [quantities, setQuantities] = useState<{ [id: number]: number }>({});
+  const [hoveredProductId, setHoveredProductId] = useState<number | null>(null)
+  const [quantities, setQuantities] = useState<{ [id: number]: number }>({})
 
   const handleAddToCart = (product: Product, e: React.MouseEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (addToBasket) {
-      const quantity = quantities[product.id] || 1;
-      addToBasket(product, quantity);
+      const quantity = quantities[product.id] || 1
+      addToBasket(product, quantity)
     }
-  };
+  }
 
   const changeQuantity = (productId: number, amount: number) => {
     setQuantities(prev => ({
       ...prev,
       [productId]: Math.max(1, (prev[productId] || 1) + amount)
-    }));
-  };
+    }))
+  }
 
   if (products.length === 0) {
-    return <div className="season-trends">Нет товаров для отображения</div>;
+    return <div className="season-trends">Нет товаров для отображения</div>
   }
 
   return (
@@ -97,8 +97,8 @@ export default function TrendClothes({
                     <div className="quantity-selector">
                       <button
                         onClick={(e) => {
-                          e.preventDefault();
-                          changeQuantity(product.id, -1);
+                          e.preventDefault()
+                          changeQuantity(product.id, -1)
                         }}
                       >
                         -
@@ -106,8 +106,8 @@ export default function TrendClothes({
                       <span>{quantities[product.id] || 1}</span>
                       <button
                         onClick={(e) => {
-                          e.preventDefault();
-                          changeQuantity(product.id, 1);
+                          e.preventDefault()
+                          changeQuantity(product.id, 1)
                         }}
                       >
                         +
@@ -135,5 +135,5 @@ export default function TrendClothes({
         </div>
       )}
     </div>
-  );
+  )
 }

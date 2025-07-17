@@ -72,7 +72,6 @@
   background-color: #fff;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .slider-container {
     height: 400px;

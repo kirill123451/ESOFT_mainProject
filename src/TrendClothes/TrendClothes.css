@@ -199,7 +199,6 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
-/* Стили для кнопки "Все спецпредложения" */
 .view-all-specials-container {
   display: flex;
   justify-content: center;

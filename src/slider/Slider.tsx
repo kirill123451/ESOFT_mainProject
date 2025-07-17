@@ -9,11 +9,11 @@ function Slider () {
 
     useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 10000);
-    return () => clearInterval(interval);
+      setCurrentSlide((prev) => (prev + 1) % slides.length)
+    }, 10000)
+    return () => clearInterval(interval)
 
-  });
+  })
     return (
         <div className="slider-container">
             <div className="slider" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>

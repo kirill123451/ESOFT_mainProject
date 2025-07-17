@@ -1,31 +1,31 @@
-import { useState, useEffect, useRef, useCallback } from "react";
-import { Link } from "react-router-dom";
-import axios from 'axios';
-import type { Product } from './types';
-import './SearchField.css';
+import { useState, useEffect, useRef, useCallback } from "react"
+import { Link } from "react-router-dom"
+import axios from 'axios'
+import type { Product } from './types'
+import './SearchField.css'
 
 interface SearchFieldProps {
   userData?: {
-    role: 'USER' | 'ADMIN';
-  };
+    role: 'USER' | 'ADMIN'
+  }
 }
 
 function SearchField({ userData }: SearchFieldProps) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [results, setResults] = useState<Product[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const searchRef = useRef<HTMLDivElement>(null);
+  const [searchTerm, setSearchTerm] = useState('')
+  const [results, setResults] = useState<Product[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const searchRef = useRef<HTMLDivElement>(null)
 
   const searchProducts = useCallback(async (term: string) => {
     if (term.trim() === '') {
-      setResults([]);
-      return;
+      setResults([])
+      return
     }
 
-    setIsLoading(true);
-    setError(null);
+    setIsLoading(true)
+    setError(null)
     
     try {
   const response = await axios.get<Product[]>('http://localhost:3000/product', {
@@ -33,55 +33,53 @@ function SearchField({ userData }: SearchFieldProps) {
       search: term,
       limit: 5
     }
-  });
+  })
 
-  // Исправленная обработка ответа
   if (response.data && Array.isArray(response.data)) {
-    setResults(response.data);
+    setResults(response.data)
   } else {
-    setResults([]);
-    setError('Некорректный формат данных');
+    setResults([])
+    setError('Некорректный формат данных')
   }
 } catch (err) {
-  console.error('Ошибка поиска:', err);
-  setResults([]);
-  setError('Ошибка при загрузке данных');
+  console.error('Ошибка поиска:', err)
+  setResults([])
+  setError('Ошибка при загрузке данных')
 } finally {
-  setIsLoading(false);
+  setIsLoading(false)
 }
-  }, []);
+  }, [])
 
   useEffect(() => {
     const debounceTimer = setTimeout(() => {
-      searchProducts(searchTerm);
-    }, 300);
+      searchProducts(searchTerm)
+    }, 300)
 
-    return () => clearTimeout(debounceTimer);
-  }, [searchTerm, searchProducts]);
+    return () => clearTimeout(debounceTimer)
+  }, [searchTerm, searchProducts])
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-        setIsFocused(false);
+        setIsFocused(false)
       }
-    };
+    }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
-  // Функция для безопасного отображения результатов
   const renderResults = () => {
     if (error) {
-      return <div className="no-results">{error}</div>;
+      return <div className="no-results">{error}</div>
     }
 
     if (isLoading) {
-      return <div className="search-loading">Поиск...</div>;
+      return <div className="search-loading">Поиск...</div>
     }
 
     if (!Array.isArray(results) || results.length === 0) {
-      return <div className="no-results">Ничего не найдено</div>;
+      return <div className="no-results">Ничего не найдено</div>
     }
 
     return results.map(product => (
@@ -90,8 +88,8 @@ function SearchField({ userData }: SearchFieldProps) {
         to={`/product/${product.id}`} 
         className="search-result-item"
         onClick={() => {
-          setSearchTerm('');
-          setIsFocused(false);
+          setSearchTerm('')
+          setIsFocused(false)
         }}
       >
         <img 
@@ -99,7 +97,7 @@ function SearchField({ userData }: SearchFieldProps) {
           alt={product.individualName} 
           className="result-image" 
           onError={(e) => {
-            (e.target as HTMLImageElement).src = '/images/placeholder.jpg';
+            (e.target as HTMLImageElement).src = '/images/placeholder.jpg'
           }}
         />
         <div className="result-info">
@@ -115,8 +113,8 @@ function SearchField({ userData }: SearchFieldProps) {
           </div>
         </div>
       </Link>
-    ));
-  };
+    ))
+  }
 
   return (
     <div className="search-field" ref={searchRef}>
@@ -136,7 +134,7 @@ function SearchField({ userData }: SearchFieldProps) {
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default SearchField;
+export default SearchField

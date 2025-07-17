@@ -33,7 +33,7 @@ export const register = async (req: Request<{}, {}, RegisterRequest>, res: Respo
           path: error.path.join('.'),
           message: error.message
         }))
-      });
+      })
     }
     return res.status(500).json({ error: 'Ошибка регистрации' })
   }
@@ -62,7 +62,7 @@ export const login = async(req: Request<{}, {}, LoginRequest>, res: Response) =>
           path: error.path.join('.'),
           message: error.message
         }))
-      });
+      })
     }   
         return res.status(500).json({ error: 'Ошибка входа' })
     }
@@ -102,7 +102,7 @@ export const reqPasswrodReset = async (req: Request, res: Response) => {
         resetToken: token,
         resetTokenExpires: { gt: new Date() }
       }
-    });
+    })
 
     if (!user) {
       return res.status(400).json({ error: 'Неверный или просроченный токен' })
@@ -122,4 +122,4 @@ export const reqPasswrodReset = async (req: Request, res: Response) => {
   } catch (err) {
     return res.status(500).json({ error: 'Ошибка при сбросе пароля' })
   }
-};
+}

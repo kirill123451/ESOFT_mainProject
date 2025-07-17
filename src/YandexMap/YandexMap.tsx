@@ -1,30 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react'
 
 declare global {
   interface Window {
-    ymaps: any;
+    ymaps: any
   }
 }
 
 function YandexMap() {
-  const mapRef = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<any>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const mapRef = useRef<HTMLDivElement>(null)
+  const mapInstance = useRef<any>(null)
+  const [scriptLoaded, setScriptLoaded] = useState(false)
 
   useEffect(() => {
-    if (mapInstance.current || scriptLoaded) return;
+    if (mapInstance.current || scriptLoaded) return
 
     const initMap = () => {
-      if (!mapRef.current || mapInstance.current) return;
+      if (!mapRef.current || mapInstance.current) return
 
       window.ymaps.ready(() => {
-        if (mapInstance.current) return;
+        if (mapInstance.current) return
 
         mapInstance.current = new window.ymaps.Map(mapRef.current, {
           center: [57.1524, 65.5343],
           zoom: 12,
           controls: ['zoomControl', 'fullscreenControl']
-        });
+        })
 
         const points = [
           {
@@ -51,7 +51,7 @@ function YandexMap() {
             hint: "ул. Мельникайте, 116к2",
             color: "violet"
           },
-        ];
+        ]
 
         points.forEach(point => {
           const placemark = new window.ymaps.Placemark(
@@ -63,36 +63,36 @@ function YandexMap() {
             {
               preset: `islands#${point.color}Icon`
             }
-          );
+          )
           
-          mapInstance.current.geoObjects.add(placemark);
-        });
-      });
-    };
+          mapInstance.current.geoObjects.add(placemark)
+        })
+      })
+    }
 
     if (window.ymaps) {
-      initMap();
-      return;
+      initMap()
+      return
     }
 
     if (!document.querySelector('script[src*="api-maps.yandex.ru"]')) {
-      const script = document.createElement('script');
-      script.src = `https://api-maps.yandex.ru/2.1/?apikey=ba1fe2e3-0c27-4dc2-904e-3d688007c713&lang=ru_RU`;
-      script.async = true;
+      const script = document.createElement('script')
+      script.src = `https://api-maps.yandex.ru/2.1/?apikey=ba1fe2e3-0c27-4dc2-904e-3d688007c713&lang=ru_RU`
+      script.async = true
       script.onload = () => {
-        setScriptLoaded(true);
-        initMap();
-      };
-      document.body.appendChild(script);
+        setScriptLoaded(true)
+        initMap()
+      }
+      document.body.appendChild(script)
     }
 
     return () => {
       if (mapInstance.current) {
-        mapInstance.current.destroy();
-        mapInstance.current = null;
+        mapInstance.current.destroy()
+        mapInstance.current = null
       }
-    };
-  }, [scriptLoaded]);
+    }
+  }, [scriptLoaded])
 
   return (
     <div 
@@ -105,7 +105,7 @@ function YandexMap() {
         margin: '20px auto',
       }} 
     />
-  );
+  )
 }
 
-export default YandexMap;
+export default YandexMap

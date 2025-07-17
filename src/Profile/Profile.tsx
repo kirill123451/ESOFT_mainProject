@@ -1,22 +1,22 @@
-import { useState } from "react";
-import AdminPanel from "./AdminPanel";
+import { useState } from "react"
+import AdminPanel from "./AdminPanel"
 import './Profile.css'
 
 interface UserData {
-  email: string;
-  name: string | null;
-  role: 'USER' | 'ADMIN';
-  id: string; 
+  email: string
+  name: string | null
+  role: 'USER' | 'ADMIN'
+  id: string
 }
 
 function Profile({ userData }: { userData: UserData }) {
-  const [activeTab, setActiveTab] = useState<'profile' | 'admin'>('profile');
-  const [currentUserData, setCurrentUserData] = useState<UserData>(userData);
-  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'profile' | 'admin'>('profile')
+  const [currentUserData, setCurrentUserData] = useState<UserData>(userData)
+  const [loading, setLoading] = useState(false)
 
   const formatRole = (role: 'USER' | 'ADMIN') => {
-    return role === 'ADMIN' ? 'Администратор' : 'Пользователь';
-  };
+    return role === 'ADMIN' ? 'Администратор' : 'Пользователь'
+  }
 
   return (
     <div className="profile">
@@ -71,7 +71,7 @@ function Profile({ userData }: { userData: UserData }) {
         </div>
       )}
     </div>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

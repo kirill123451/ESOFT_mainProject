@@ -13,7 +13,7 @@ app.use(cors({
   origin: true,
   credentials: true,
   exposedHeaders: ['*']
-}));
+}))
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
