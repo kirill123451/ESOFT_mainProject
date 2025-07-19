@@ -4,7 +4,7 @@ import  prisma  from '../prisma/client'
 const secretJWT = process.env.JWT_SECRET || 'secret111'
 
 export const createToken = (userId: string) => {
-    return jwt.sign({ userId }, secretJWT, { expiresIn: '60d' })
+    return jwt.sign({ userId }, secretJWT, { expiresIn: '14d' })
 }
 
 export const verifyToken = (token: string) => {

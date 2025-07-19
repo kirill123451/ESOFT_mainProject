@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import prisma from '../prisma/client'
+import { Prisma } from '@prisma/client'
 
 interface ProductResponse {
   id: number
@@ -13,6 +14,9 @@ interface ProductResponse {
   imgUrl: string
   isSpecial: boolean
   product_type: string
+  clothes_type?: string
+  shoes_type?: string
+  bags_type?: string
 }
 
 export const getProductById = async (req: Request, res: Response): Promise<void> => {
@@ -24,18 +28,16 @@ export const getProductById = async (req: Request, res: Response): Promise<void>
       return
     }
 
-    const product = await prisma.$queryRawUnsafe(`
+    const products = await prisma.$queryRaw<ProductResponse[]>`
       SELECT * FROM "AllProducts" WHERE id = ${Number(id)} LIMIT 1
-    `) as any[]
+    `
 
-    if (!product || product.length === 0) {
+    if (!products || products.length === 0) {
       res.status(404).json({ error: 'Товар не найден' })
       return
     }
 
-    
-
-    const dbProduct = product[0]
+    const dbProduct = products[0]
     const productType = dbProduct.clothes_type || dbProduct.shoes_type || dbProduct.bags_type || 'Неизвестный тип'
 
     const response: ProductResponse = {
@@ -67,9 +69,9 @@ export const getProductsByType = async (req: Request, res: Response): Promise<vo
       return
     }
 
-    const products = await prisma.$queryRawUnsafe(`
-      SELECT * FROM "AllProducts" WHERE product_type = '${type}'
-    `) as any[]
+    const products = await prisma.$queryRaw<any[]>`
+      SELECT * FROM "AllProducts" WHERE product_type = ${type}
+    `
 
     const response = products.map(dbProduct => ({
       id: dbProduct.id,
@@ -97,7 +99,6 @@ export const getProductsByType = async (req: Request, res: Response): Promise<vo
 export const filterProducts = async (req: Request, res: Response): Promise<void> => {
   try {
     const { type, minPrice, maxPrice, material, clothesType, shoesType, bagsType } = req.query
-
     const brands = req.query['brands[]'] || req.query.brands
 
     if (!type || !['clothes', 'shoes', 'bags'].includes(type as string)) {
@@ -118,40 +119,40 @@ export const filterProducts = async (req: Request, res: Response): Promise<void>
       return
     }
 
-    let query = `SELECT * FROM "AllProducts" WHERE product_type = '${type}'`
+    let query = Prisma.sql`SELECT * FROM "AllProducts" WHERE product_type = ${type}`
 
     if (min !== undefined && max !== undefined) {
-      query += ` AND price BETWEEN ${min} AND ${max}`
+      query = Prisma.sql`${query} AND price BETWEEN ${min} AND ${max}`
     }
 
     if (brands) {
-  const brandsList = Array.isArray(brands) ? brands : [brands]
-  if (brandsList.length > 0 && brandsList[0] !== '') {
-    query += ` AND brand IN (${brandsList.map(b => `'${b}'`).join(',')})`
-  }
-}
+      const brandsList = Array.isArray(brands) ? brands : [brands]
+      if (brandsList.length > 0 && brandsList[0] !== '') {
+        query = Prisma.sql`${query} AND brand IN (${Prisma.join(brandsList)})`
+      }
+    }
 
     if (material) {
-  const materialsList = Array.isArray(material) ? material : [material]
-  if (materialsList.length > 0 ) {
-    query += ` AND material IN (${materialsList.map(m => `'${m}'`).join(',')})`
-  }
-}
+      const materialsList = Array.isArray(material) ? material : [material]
+      if (materialsList.length > 0) {
+        query = Prisma.sql`${query} AND material IN (${Prisma.join(materialsList)})`
+      }
+    }
 
     let typeFilter = clothesType
     if (type === 'shoes') typeFilter = shoesType
     if (type === 'bags') typeFilter = bagsType
 
     if (typeFilter) {
-      const typeField = `${type}Type`
+      const typeField = `${type}_type`
       const typesList = Array.isArray(typeFilter) ? typeFilter : [typeFilter]
       if (typesList.length > 0) {
-        query += ` AND "${typeField}" IN (${typesList.map(t => `'${t}'`).join(',')})`
+        query = Prisma.sql`${query} AND ${Prisma.raw(typeField)} IN (${Prisma.join(typesList)})`
       }
     }
 
     console.log('Executing query:', query)
-    const products = await prisma.$queryRawUnsafe(query)
+    const products = await prisma.$queryRaw(query)
     
     res.status(200).json(products)
     
@@ -161,14 +162,12 @@ export const filterProducts = async (req: Request, res: Response): Promise<void>
   }
 }
 
-
 export const getSpecialOffers = async (req: Request, res: Response): Promise<void> => {
   try {
-
-    const specialProducts = await prisma.$queryRawUnsafe(`
+    const specialProducts = await prisma.$queryRaw`
       SELECT * FROM "AllProducts" 
       WHERE "isSpecial" = true
-    `) as any[]
+    `
 
     res.status(200).json(specialProducts)
   } catch (err) {
